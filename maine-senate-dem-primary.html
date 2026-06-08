@@ -176,8 +176,17 @@ body{margin:0;background:var(--bg-base);color:var(--text-primary);font-family:va
 .cand-sub{font-size:11px;}
 .cand-pct{font-size:21px;}
 .bar-track{height:18px;}
+/* groups: two equal-width columns; every card is its natural content height (no stretching), so a collapsed card just shrinks to its header plus a top-two summary and its neighbours keep their order */
+.groups-grid{display:flex;gap:8px;align-items:flex-start;}
+.groups-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px;}
+.groups-col .vh-card{margin-bottom:0;display:flex;flex-direction:column;}
+.card-summary{padding:7px 14px 11px;display:flex;flex-direction:column;gap:7px;}
+.summary-row{display:flex;align-items:center;gap:8px;font-size:12.5px;line-height:1.2;}
+.summary-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;}
+.summary-name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#1a1a1a;font-weight:600;}
+.summary-val{font-variant-numeric:tabular-nums;font-weight:700;}
 /* desktop: cap the left column to the viewport and let the map flex to fill the rest, so the whole board fits one screen for a screenshot */
-@media(min-width:1201px){.left-col{display:flex;flex-direction:column;gap:12px;height:calc(100vh - 32px);min-height:0;}.cand-bars{flex:0 0 auto;margin-bottom:0;}.info-box{flex:0 0 auto;margin-bottom:0;}.map-card{flex:1 1 auto;min-height:0;margin-bottom:0;display:flex;flex-direction:column;}.tx-map.tx-map-gl{flex:1 1 auto;height:auto;min-height:0;}.vh-grid{grid-template-columns:1fr 460px;}.groups-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:stretch;flex:1;grid-auto-rows:1fr;}.groups-grid .vh-card{margin-bottom:0;display:flex;flex-direction:column;}.demo-header{margin:0 2px 8px;}.card-header{padding:7px 12px;}.card-title-text{font-size:12px;}.card-body{padding:3px 12px 9px;flex:1;display:flex;flex-direction:column;justify-content:space-evenly;}.groups-grid .slider-row{border-top:none;}.slider-row{padding:3px 0;}.slider-head{margin-bottom:2px;}.slider-lbl{font-size:11.5px;}.slider-val{font-size:11.5px;}.vh-slider{margin:2px 0;}.vh-slider::-webkit-slider-thumb{width:13px;height:13px;margin-top:-4px;}.vh-slider::-moz-range-thumb{width:13px;height:13px;}.right-col{display:flex;flex-direction:column;}.reset-btn{min-height:36px;margin-top:8px;}}
+@media(min-width:1201px){.left-col{display:flex;flex-direction:column;gap:12px;height:calc(100vh - 32px);min-height:0;}.results-card{flex:0 0 auto;margin-bottom:0;}.info-box{flex:0 0 auto;margin-bottom:0;}.map-card{flex:1 1 auto;min-height:0;margin-bottom:0;display:flex;flex-direction:column;}.tx-map.tx-map-gl{flex:1 1 auto;height:auto;min-height:0;}.vh-grid{grid-template-columns:1fr 460px;}.groups-grid{flex:1 0 auto;min-height:0;}.groups-col .vh-card{flex:0 0 auto;}.demo-header{margin:0 2px 8px;}.card-header{padding:7px 12px;}.card-title-text{font-size:12px;}.card-body{padding:3px 12px 9px;}.results-card .card-header{padding:9px 16px;}.results-card .card-title-text{font-size:13px;}.results-card .card-body{padding:5px 20px 11px;}.groups-grid .slider-row{border-top:none;}.slider-row{padding:3px 0;}.slider-head{margin-bottom:2px;}.slider-lbl{font-size:11.5px;}.slider-val{font-size:11.5px;}.vh-slider{margin:2px 0;}.vh-slider::-webkit-slider-thumb{width:13px;height:13px;margin-top:-4px;}.vh-slider::-moz-range-thumb{width:13px;height:13px;}.right-col{display:flex;flex-direction:column;}.reset-btn{min-height:36px;margin-top:8px;}}
 
   </style>
 </head>
@@ -557,16 +566,18 @@ function SliderRow({ label, hint, value, onChange, max = 100, step = 0.5, suffix
     h("input", { type: "range", className: "vh-slider", min: 0, max, step, value, onChange: e => onChange(+e.target.value), style: { '--thumb-color': color } }));
 }
 
-function CollapsibleCard({ title, defaultOpen, children }) {
+function CollapsibleCard({ title, defaultOpen, summary, className, children }) {
   const [open, setOpen] = useState(defaultOpen);
-  return h("div", { className: "vh-card collapsible" },
+  return h("div", { className: "vh-card collapsible" + (className ? " " + className : "") + (open ? "" : " collapsed") },
     h("button", { className: "card-header", onClick: () => setOpen(!open) },
       h("span", { className: "card-title-text" }, title),
       h("div", { className: "card-header-right" },
         h("span", { className: `chev ${open ? 'open' : ''}` },
           h("svg", { width: "12", height: "12", viewBox: "0 0 12 12" },
             h("path", { d: "M3 4.5L6 7.5L9 4.5", stroke: "currentColor", strokeWidth: "1.5", fill: "none", strokeLinecap: "round", strokeLinejoin: "round" }))))),
-    open && h("div", { className: "card-body" }, children));
+    open
+      ? h("div", { className: "card-body" }, children)
+      : (summary ? h("div", { className: "card-summary" }, summary) : null));
 }
 
 function candPhoto(id) {
@@ -583,7 +594,7 @@ function CandRow({ cand, pct, status }) {
       h("div", { className: "cand-text" },
         h("div", { className: "cand-name", style: { color: cand.color } },
           h("span", { className: "cand-name-text" }, cand.name),
-          h("span", { className: "party-tag dem" }, cand.party),
+          h("span", { className: "party-tag " + (cand.party === "R" ? "gop" : "dem") }, cand.party),
           status === 'leads' && h("span", { className: "advances-badge" }, "Leads")),
         h("div", { className: "cand-sub" }, cand.sub))),
     h("div", { className: "bar-track" }, h("div", { className: "bar-fill", style: { width: `${Math.min(100, pct)}%`, background: cand.color } })),
@@ -699,7 +710,16 @@ function PrimaryDashboard() {
 
         /* ── LEFT COLUMN ── */
         h("div", { ref: leftColRef, className: "left-col" },
-          h("div", { className: "cand-bars" },
+          h(CollapsibleCard, {
+            className: "results-card", title: "Statewide shares", defaultOpen: true,
+            summary: ranked.slice(0, 2).map(r => {
+              const c = CAND_BY_ID[r.id];
+              return h("div", { className: "summary-row", key: r.id },
+                h("span", { className: "summary-dot", style: { background: c.color } }),
+                h("span", { className: "summary-name" }, c.name),
+                h("span", { className: "summary-val", style: { color: c.color } }, r.pct.toFixed(1) + "%"));
+            })
+          },
             ranked.map(r => h(CandRow, { key: r.id, cand: CAND_BY_ID[r.id], pct: r.pct, status: rowStatus(r.id) }))),
           INFO_NOTE && h("div", { className: "info-box" }, INFO_NOTE),
           h("div", { className: "vh-card map-card" },
@@ -738,13 +758,24 @@ function PrimaryDashboard() {
                 h("div", { className: "demo-header" },
                   h("div", { className: "demo-title" }, GROUPS_TITLE),
                   h("div", { className: "demo-sub" }, GROUPS_SUB)),
-                h("div", { className: "groups-grid" }, GROUPS.map(g => h(CollapsibleCard, { key: g.id, title: g.label, defaultOpen: true },
-                  NAMED.map(c => h(SliderRow, {
-                    key: c.id, label: c.name,
-                    value: support[g.id][c.id] * 100,
-                    onChange: v => setSup(g.id, c.id, v),
-                    max: 100, step: 0.5, suffix: '%', color: c.color
-                  }))))),
+                h("div", { className: "groups-grid" }, [0, 1].map(col =>
+                  h("div", { className: "groups-col", key: "gc" + col },
+                    GROUPS.filter((g, gi) => gi % 2 === col).map(g => {
+                      const top2 = NAMED.slice().sort((a, b) => support[g.id][b.id] - support[g.id][a.id]).slice(0, 2);
+                      return h(CollapsibleCard, {
+                        key: g.id, title: g.label, defaultOpen: true,
+                        summary: top2.map(c => h("div", { className: "summary-row", key: c.id },
+                          h("span", { className: "summary-dot", style: { background: c.color } }),
+                          h("span", { className: "summary-name" }, c.name),
+                          h("span", { className: "summary-val", style: { color: c.color } }, (support[g.id][c.id] * 100).toFixed(1) + "%")))
+                      },
+                        NAMED.map(c => h(SliderRow, {
+                          key: c.id, label: c.name,
+                          value: support[g.id][c.id] * 100,
+                          onChange: v => setSup(g.id, c.id, v),
+                          max: 100, step: 0.5, suffix: '%', color: c.color
+                        })));
+                    })))),
                 h("button", { className: "reset-btn", onClick: resetAll }, "Reset All Levers"))))));
 }
 
