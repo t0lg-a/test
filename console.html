@@ -950,23 +950,99 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
 .graphic-card__foot { display: flex; justify-content: space-between; padding: 0.8rem 1.1rem; border-top: 1px solid var(--stroke-soft); font-size: var(--vh-text-xs); color: var(--text-muted); }
 .graphic-note { font-size: var(--vh-text-sm); color: var(--text-muted); margin: 1rem 0 0; }
 
+/* Empty map slot (no map data to render) */
 .map--empty { min-height: 240px; align-items: center; justify-content: center; }
 .map--empty svg { width: 46px; height: 46px; color: var(--text-muted); opacity: 0.45; }
+
+/* Depot: races + collapsible reporting panel */
+.depot-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 1.5rem; align-items: start; }
+.depot-main { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+@media (max-width: 1024px) { .depot-grid { grid-template-columns: 1fr; } }
+.side-panel { background: var(--bg-elevated); border: 1px solid var(--stroke-soft); border-radius: 16px; overflow: hidden; }
+.side-panel__head { width: 100%; background: none; border: none; font: inherit; color: inherit; text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.9rem 1.1rem; cursor: pointer; }
+.side-panel__title { font-size: var(--vh-text-base); font-weight: 600; }
+.side-panel__head .chev { width: 18px; height: 18px; color: var(--text-secondary); transition: transform 0.15s ease; flex: 0 0 18px; }
+.side-panel.is-collapsed .chev { transform: rotate(-90deg); }
+.side-panel__body { padding: 0 1.1rem 1rem; }
+.side-panel.is-collapsed .side-panel__body { display: none; }
+.rep-row { padding: 0.7rem 0; border-top: 1px solid var(--stroke-soft); display: flex; flex-direction: column; gap: 0.5rem; }
+.rep-row:first-child { border-top: none; padding-top: 0.25rem; }
+.rep-row__head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.rep-row__name { font-weight: 600; font-size: var(--vh-text-sm); }
+.rep-row__meta { font-size: var(--vh-text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+
+/* Race page: content + collapsible reporting panel (collapse reclaims width) */
+.race-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 1.5rem; align-items: start; }
+.race-main { display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
+@media (max-width: 1024px) { .race-grid { grid-template-columns: 1fr; } }
+.race-grid.is-collapsed { grid-template-columns: minmax(0, 1fr) auto; }
+.race-grid.is-collapsed .side-panel__body { display: none; }
+.race-grid.is-collapsed .side-panel__title { display: none; }
+.race-grid.is-collapsed .side-panel__head { padding: 0.7rem; }
+.race-grid.is-collapsed .chev { transform: rotate(90deg); }
+
+/* Race page: content + collapsible reporting panel (collapse frees space) */
+.race-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 1.5rem; align-items: start; }
+.race-grid.is-collapsed { grid-template-columns: minmax(0, 1fr) auto; }
+@media (max-width: 1024px) { .race-grid, .race-grid.is-collapsed { grid-template-columns: 1fr; } }
+.race-grid.is-collapsed .side-panel__body { display: none; }
+.race-grid.is-collapsed .side-panel__title { display: none; }
+.race-grid.is-collapsed .side-panel__head { justify-content: center; padding: 0.7rem; }
+.race-grid.is-collapsed .chev { transform: rotate(90deg); }
+
+/* Section header with an inline control */
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
+.section-head .eyebrow { margin: 0; }
+
+/* Depot side panel (race list) */
+.depot-list { display: flex; flex-direction: column; }
+.depot-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0; border-top: 1px solid var(--stroke-soft); text-decoration: none; color: var(--text-primary); }
+.depot-item:first-child { border-top: none; padding-top: 0.2rem; }
+.depot-item__title { font-weight: 600; font-size: var(--vh-text-sm); }
+.depot-item__meta { font-size: var(--vh-text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.depot-item:hover .depot-item__title, .depot-item.is-active .depot-item__title { color: var(--accent-text-primary); }
+
+/* Collapsible left sidebar */
+.sidebar { transition: flex-basis 150ms ease, width 150ms ease; }
+.sidebar__top { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.sidebar__toggle { background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 0.3rem; display: inline-flex; border-radius: 8px; flex: 0 0 auto; }
+.sidebar__toggle:hover { background: var(--menu-item-hover); color: var(--accent-text-secondary); }
+.sidebar__toggle .chev { width: 18px; height: 18px; transition: transform 150ms ease; }
+.nav__label { white-space: nowrap; }
+.sidebar.is-collapsed { flex-basis: 66px; width: 66px; padding-left: 0.55rem; padding-right: 0.55rem; }
+.sidebar.is-collapsed .brand__name, .sidebar.is-collapsed .brand__sub, .sidebar.is-collapsed .nav__label { display: none; }
+.sidebar.is-collapsed .sidebar__top { flex-direction: column; gap: 0.7rem; }
+.sidebar.is-collapsed .brand { justify-content: center; padding: 0; gap: 0; }
+.sidebar.is-collapsed .nav__link { justify-content: center; padding: 0.55rem; }
+.sidebar.is-collapsed .sidebar__toggle .chev { transform: rotate(180deg); }
+
+/* Races nested under Depot (shown when sidebar expanded) */
+.nav__sub { display: flex; flex-direction: column; gap: 0.05rem; margin: 0.15rem 0 0.35rem; padding-left: 2.35rem; }
+.nav__sublink { padding: 0.4rem 0.7rem; border-radius: 8px; color: var(--text-secondary); font-size: var(--vh-text-sm); text-decoration: none; white-space: nowrap; transition: background-color 140ms ease, color 140ms ease; }
+.nav__sublink:hover { background: var(--menu-item-hover); color: var(--accent-text-secondary); }
+.nav__sublink.is-active { color: var(--accent-text-primary); font-weight: 600; }
+.sidebar.is-collapsed .nav__sub { display: none; }
+
 .view { display: none; }
 .view.is-active { display: block; }
   </style>
 </head>
 <body>
   <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <svg class="brand__mark" viewBox="0 0 160.02 160.06" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#351c71" d="M159.96,80c0,44.18-35.79,80-79.94,80S.07,124.18.07,80,35.87,0,80.02,0s79.94,35.82,79.94,80ZM140.09,80c0-33.3-26.98-60.3-60.26-60.3s-60.26,27-60.26,60.3,26.98,60.3,60.26,60.3,60.26-27,60.26-60.3Z"/><polygon fill="#351c71" points="107.45 45.89 121.58 59.99 66.05 115.35 37.39 87.06 51.4 72.94 66.05 87.13 107.45 45.89"/></svg>
-        <span><span class="brand__name">VoteHub</span><span class="brand__sub">Console</span></span>
+    <aside class="sidebar" data-collapsible>
+      <div class="sidebar__top">
+        <div class="brand"><svg class="brand__mark" viewBox="0 0 160.02 160.06" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#351c71" d="M159.96,80c0,44.18-35.79,80-79.94,80S.07,124.18.07,80,35.87,0,80.02,0s79.94,35.82,79.94,80ZM140.09,80c0-33.3-26.98-60.3-60.26-60.3s-60.26,27-60.26,60.3,26.98,60.3,60.26,60.3,60.26-27,60.26-60.3Z"/><polygon fill="#351c71" points="107.45 45.89 121.58 59.99 66.05 115.35 37.39 87.06 51.4 72.94 66.05 87.13 107.45 45.89"/></svg><span><span class="brand__name">VoteHub</span><span class="brand__sub">Console</span></span></div>
+        <button class="sidebar__toggle" data-collapse aria-expanded="true" aria-label="Collapse menu"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
       </div>
       <nav class="nav">
-        <a class="nav__link" href="#" data-nav="depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="8" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Depot</a>
-        <a class="nav__link" href="#" data-nav="reporting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="4" width="8" height="3" rx="1"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m9 14 2 2 4-4"/></svg>Reporting status</a>
-        <a class="nav__link" href="#" data-nav="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="m8 11 4 4 4-4"/><path d="M5 19h14"/></svg>Export</a>
+        <a class="nav__link" href="#" data-nav="depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="8" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg><span class="nav__label">Depot</span></a>
+        <div class="nav__sub">
+          <a class="nav__sublink" href="#" data-goto="race">Governor</a>
+          <a class="nav__sublink" href="#" data-goto="race">U.S. Senate</a>
+          <a class="nav__sublink" href="#" data-goto="race">Attorney General</a>
+          <a class="nav__sublink" href="#" data-goto="race">U.S. House · District 3</a>
+        </div>
+        <a class="nav__link" href="#" data-nav="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="m8 11 4 4 4-4"/><path d="M5 19h14"/></svg><span class="nav__label">Export</span></a>
       </nav>
     </aside>
     <main class="main">
@@ -978,31 +1054,30 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
         </div>
         <div class="topbar__actions">
           <button class="vh-button vh-button--secondary vh-button-sm" data-race-only data-open-modal="#voteModal">Enter votes</button>
-          <span class="live"><span class="live__dot"></span>Live · <span data-clock>--:--:--</span></span>
         </div>
       </header>
       <div class="content">
 
         <section class="view" id="view-depot"><div class="stack">
-          <div class="toolbar">
-            <div class="vh-search">
-              <svg class="vh-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-              <input id="depotSearch" class="vh-search__input" type="text" placeholder="Filter races" aria-label="Filter races">
+            <div class="toolbar">
+              <div class="vh-search">
+                <svg class="vh-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="depotSearch" class="vh-search__input" type="text" placeholder="Filter races" aria-label="Filter races">
+              </div>
+              <div class="toolbar__spacer"></div>
+              <span class="note" id="depotCount"></span>
             </div>
-            <div class="toolbar__spacer"></div>
-            <span class="note" id="depotCount"></span>
-          </div>
-          <div class="table-card"><div class="table-scroll">
-            <table class="tbl">
-              <thead><tr><th>ID</th><th>Race</th><th>Poll close</th><th>Call</th><th>Leader</th><th>Incumbent</th><th class="num">Margin</th><th class="num">Votes reported</th><th class="num">Est. % in</th></tr></thead>
-              <tbody id="depotBody">
-                <tr><td class="muted">101</td><td><a class="race-link" href="#" data-goto="race">Governor</a></td><td>7:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate A</td><td>Candidate A</td><td class="num">+6.8%</td><td class="num">614,500</td><td class="num">42%</td></tr>
-                <tr><td class="muted">102</td><td><a class="race-link" href="#" data-goto="race">U.S. Senate</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate D</td><td>Candidate E</td><td class="num">+2.0%</td><td class="num">345,700</td><td class="num">29%</td></tr>
-                <tr><td class="muted">103</td><td><a class="race-link" href="#" data-goto="race">Attorney General</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="muted">&mdash;</td><td>Candidate G</td><td class="num muted">&mdash;</td><td class="num">0</td><td class="num">0%</td></tr>
-                <tr><td class="muted">104</td><td><a class="race-link" href="#" data-goto="race">U.S. House &middot; District 3</a></td><td>7:30 PM ET</td><td><span class="pill pill--done">Called</span></td><td class="leader">Candidate J</td><td>&mdash;</td><td class="num">+17.0%</td><td class="num">135,000</td><td class="num">90%</td></tr>
-              </tbody>
-            </table>
-          </div></div>
+            <div class="table-card"><div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>ID</th><th>Race</th><th>Poll close</th><th>Call</th><th>Leader</th><th>Incumbent</th><th class="num">Margin</th><th class="num">Votes reported</th><th class="num">Est. % in</th></tr></thead>
+                <tbody id="depotBody">
+                  <tr><td class="muted">101</td><td><a class="race-link" href="#" data-goto="race">Governor</a></td><td>7:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate A</td><td>Candidate A</td><td class="num">+6.8%</td><td class="num">614,500</td><td class="num">42%</td></tr>
+                  <tr><td class="muted">102</td><td><a class="race-link" href="#" data-goto="race">U.S. Senate</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate D</td><td>Candidate E</td><td class="num">+2.0%</td><td class="num">345,700</td><td class="num">29%</td></tr>
+                  <tr><td class="muted">103</td><td><a class="race-link" href="#" data-goto="race">Attorney General</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="muted">&mdash;</td><td>Candidate G</td><td class="num muted">&mdash;</td><td class="num">0</td><td class="num">0%</td></tr>
+                  <tr><td class="muted">104</td><td><a class="race-link" href="#" data-goto="race">U.S. House &middot; District 3</a></td><td>7:30 PM ET</td><td><span class="pill pill--done">Called</span></td><td class="leader">Candidate J</td><td>&mdash;</td><td class="num">+17.0%</td><td class="num">135,000</td><td class="num">90%</td></tr>
+                </tbody>
+              </table>
+            </div></div>
         </div></section>
 
         <section class="view" id="view-race"><div class="stack">
@@ -1055,17 +1130,20 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
         </section>
 
         <section>
-          <p class="eyebrow">By VCU</p>
+          <div class="section-head">
+            <p class="eyebrow">By VCU</p>
+            <button class="vh-button vh-button--secondary vh-button-sm" id="shiftToggle" aria-pressed="false">Shift view · <span data-shift-count>off</span></button>
+          </div>
           <div class="table-card"><div class="table-scroll">
             <table class="tbl">
               <thead>
-                <tr class="group-head"><th colspan="6"></th><th colspan="3" class="col-sep">Raw votes</th><th colspan="3" class="col-sep">Percent</th></tr>
-                <tr><th>VCU</th><th>Leader</th><th class="num">Reported</th><th class="num">Remaining</th><th class="num">Expected</th><th class="num">Margin</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th></tr>
+                <tr class="group-head"><th colspan="7"></th><th colspan="3" class="col-sep">Raw votes</th><th colspan="3" class="col-sep">Percent</th></tr>
+                <tr><th>VCU</th><th>Reporting</th><th>Leader</th><th class="num">Reported</th><th class="num">Remaining</th><th class="num">Expected</th><th class="num">Margin</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th></tr>
               </thead>
-              <tbody>
-                <tr><td>Ash County</td><td class="leader">Candidate A</td><td class="num">172,000</td><td class="num">188,000</td><td class="num">360,000</td><td class="num">+5.8%</td><td class="num col-sep">90,000</td><td class="num">80,000</td><td class="num">2,000</td><td class="num col-sep">52.3%</td><td class="num">46.5%</td><td class="num">1.2%</td></tr>
-                <tr><td>Birch County</td><td class="leader">Candidate B</td><td class="num">124,500</td><td class="num">175,500</td><td class="num">300,000</td><td class="num">+2.4%</td><td class="num col-sep">60,000</td><td class="num">63,000</td><td class="num">1,500</td><td class="num col-sep">48.2%</td><td class="num">50.6%</td><td class="num">1.2%</td></tr>
-                <tr><td>Dale County</td><td class="leader">Candidate A</td><td class="num">318,000</td><td class="num">222,000</td><td class="num">540,000</td><td class="num">+11.0%</td><td class="num col-sep">175,000</td><td class="num">140,000</td><td class="num">3,000</td><td class="num col-sep">55.0%</td><td class="num">44.0%</td><td class="num">0.9%</td></tr>
+              <tbody id="reportBody">
+                <tr data-rep-row data-status="reporting"><td>Ash County</td><td><span class="pill pill--neutral">Reporting</span></td><td class="leader">Candidate A</td><td class="num">172,000</td><td class="num">188,000</td><td class="num">360,000</td><td class="num">+5.8%</td><td class="num col-sep">90,000</td><td class="num">80,000</td><td class="num">2,000</td><td class="num col-sep">52.3%</td><td class="num">46.5%</td><td class="num">1.2%</td></tr>
+                <tr data-rep-row data-status="nearly"><td>Birch County</td><td><span class="pill pill--active">Nearly complete</span></td><td class="leader">Candidate B</td><td class="num">124,500</td><td class="num">175,500</td><td class="num">300,000</td><td class="num">+2.4%</td><td class="num col-sep">60,000</td><td class="num">63,000</td><td class="num">1,500</td><td class="num col-sep">48.2%</td><td class="num">50.6%</td><td class="num">1.2%</td></tr>
+                <tr data-rep-row data-status="complete"><td>Dale County</td><td><span class="pill pill--done">Complete</span></td><td class="leader">Candidate A</td><td class="num">318,000</td><td class="num">222,000</td><td class="num">540,000</td><td class="num">+11.0%</td><td class="num col-sep">175,000</td><td class="num">140,000</td><td class="num">3,000</td><td class="num col-sep">55.0%</td><td class="num">44.0%</td><td class="num">0.9%</td></tr>
               </tbody>
             </table>
           </div></div>
@@ -1079,39 +1157,21 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
         </section>
         </div></section>
 
-        <section class="view" id="view-reporting"><div class="stack">
-          <div class="toolbar">
-            <button class="vh-button vh-button--secondary vh-button-sm" id="shiftToggle" aria-pressed="false">Shift view · <span data-shift-count>off</span></button>
-          </div>
-          <div class="table-card"><div class="table-scroll">
-            <table class="tbl">
-              <thead><tr><th>County</th><th class="num">Votes reported</th><th class="num">Total expected</th><th class="num">% reported</th><th>State</th><th>Update</th></tr></thead>
-              <tbody id="reportBody">
-                <tr><td>Ash County</td><td class="num">172,000</td><td class="num">360,000</td><td class="num">48%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
-                <tr><td>Birch County</td><td class="num">124,500</td><td class="num">300,000</td><td class="num">42%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
-                <tr><td>Cedar County</td><td class="num">0</td><td class="num">250,000</td><td class="num">0%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
-                <tr><td>Dale County</td><td class="num">318,000</td><td class="num">540,000</td><td class="num">59%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly" selected>Nearly complete</option><option value="complete">Complete</option></select></td></tr>
-                <tr><td>Elm County</td><td class="num">51,200</td><td class="num">52,000</td><td class="num">98%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete" selected>Complete</option></select></td></tr>
-              </tbody>
-            </table>
-          </div></div>
-        </div></section>
-
         <section class="view" id="view-export"><div class="stack" style="max-width:640px">
-          <section class="panel">
-            <div class="panel__head"><h2 class="panel__title">Export postGIS data</h2></div>
-            <div class="form-grid">
-              <div class="vh-field"><label class="vh-field__label" for="exScope">Scope</label><select id="exScope" class="vh-input"><option>This race</option><option>All races</option></select></div>
-              <div class="vh-field"><label class="vh-field__label" for="exLayer">Layer</label><select id="exLayer" class="vh-input"><option>VCU results</option><option>VCU boundaries</option><option>Results + boundaries</option></select></div>
-              <div class="vh-field"><label class="vh-field__label" for="exFormat">Format</label><select id="exFormat" class="vh-input"><option>GeoJSON</option><option>Shapefile (.zip)</option><option>CSV</option></select></div>
-              <div class="vh-field"><label class="vh-field__label" for="exCrs">Coordinate system</label><select id="exCrs" class="vh-input"><option>WGS 84 (EPSG:4326)</option><option>Web Mercator (EPSG:3857)</option></select></div>
-            </div>
-            <div class="panel__row" style="margin-top:1.4rem; align-items:center">
-              <button class="vh-button vh-button--primary" id="exportBtn">Prepare export</button>
-              <span class="note" id="exportStatus" style="display:none"></span>
-              <button class="vh-button vh-button--secondary" id="downloadBtn" style="display:none">Download</button>
-            </div>
-          </section>
+        <section class="panel">
+          <div class="panel__head"><h2 class="panel__title">Export postGIS data</h2></div>
+          <div class="form-grid">
+            <div class="vh-field"><label class="vh-field__label" for="exScope">Scope</label><select id="exScope" class="vh-input"><option>This race</option><option>All races</option></select></div>
+            <div class="vh-field"><label class="vh-field__label" for="exLayer">Layer</label><select id="exLayer" class="vh-input"><option>VCU results</option><option>VCU boundaries</option><option>Results + boundaries</option></select></div>
+            <div class="vh-field"><label class="vh-field__label" for="exFormat">Format</label><select id="exFormat" class="vh-input"><option>GeoJSON</option><option>Shapefile (.zip)</option><option>CSV</option></select></div>
+            <div class="vh-field"><label class="vh-field__label" for="exCrs">Coordinate system</label><select id="exCrs" class="vh-input"><option>WGS 84 (EPSG:4326)</option><option>Web Mercator (EPSG:3857)</option></select></div>
+          </div>
+          <div class="panel__row" style="margin-top:1.4rem; align-items:center">
+            <button class="vh-button vh-button--primary" id="exportBtn">Prepare export</button>
+            <span class="note" id="exportStatus" style="display:none"></span>
+            <button class="vh-button vh-button--secondary" id="downloadBtn" style="display:none">Download</button>
+          </div>
+        </section>
         </div></section>
 
       </div>
@@ -1165,8 +1225,10 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
   if (typeof document === 'undefined') return;
   function el(id) { return document.getElementById(id); }
 
-  /* Modals: open / close / overlay / Esc */
+  /* Collapsible panels + modal open/close */
   document.addEventListener('click', function (e) {
+    var col = e.target.closest('[data-collapse]');
+    if (col) { var panel = col.closest('[data-collapsible]'); if (panel) { var c = panel.classList.toggle('is-collapsed'); col.setAttribute('aria-expanded', String(!c)); } return; }
     var o = e.target.closest('[data-open-modal]');
     if (o) { var m = document.querySelector(o.getAttribute('data-open-modal')); if (m) m.classList.add('is-open'); return; }
     if (e.target.closest('[data-close-modal]') || e.target.classList.contains('modal-overlay')) {
@@ -1177,22 +1239,12 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
     if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.is-open').forEach(function (m) { m.classList.remove('is-open'); });
   });
 
-  /* Live clock */
-  (function () {
-    var c = document.querySelector('[data-clock]'); if (!c) return;
-    function t() { c.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
-    t(); setInterval(t, 1000);
-  })();
-
-  /* Depot filter */
+  /* Depot filter (full Depot table) */
   (function () {
     var input = el('depotSearch'), body = el('depotBody'); if (!input || !body) return;
     function run() {
       var q = input.value.toLowerCase(), n = 0;
-      body.querySelectorAll('tr').forEach(function (tr) {
-        var hit = tr.textContent.toLowerCase().indexOf(q) !== -1;
-        tr.style.display = hit ? '' : 'none'; if (hit) n++;
-      });
+      body.querySelectorAll('tr').forEach(function (tr) { var hit = tr.textContent.toLowerCase().indexOf(q) !== -1; tr.style.display = hit ? '' : 'none'; if (hit) n++; });
       var c = el('depotCount'); if (c) c.textContent = n + (n === 1 ? ' race' : ' races');
     }
     input.addEventListener('input', run); run();
@@ -1210,14 +1262,9 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
     if (el('advanceBtn')) el('advanceBtn').addEventListener('click', function () { set('advanced'); });
     if (el('callBtn')) el('callBtn').addEventListener('click', function () { set('called'); });
     if (el('resetBtn')) el('resetBtn').addEventListener('click', function () { set('uncalled'); });
-    if (sel) sel.addEventListener('change', function () {
-      if (pill.classList.contains('pill--done')) set('called');
-      else if (pill.classList.contains('pill--active')) set('advanced');
-    });
-
+    if (sel) sel.addEventListener('change', function () { if (pill.classList.contains('pill--done')) set('called'); else if (pill.classList.contains('pill--active')) set('advanced'); });
     var gb = el('graphicBtn');
     if (gb) gb.addEventListener('click', function () {
-      // Builds the published race-call graphic. Render/export pipeline plugs in here.
       var rt = el('raceTitle') || el('pageTitle');
       if (el('gRace') && rt) el('gRace').textContent = rt.textContent;
       if (el('gWinner')) el('gWinner').textContent = who();
@@ -1232,33 +1279,23 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
   })();
 
   /* Vote entry form */
-  (function () {
-    var save = el('voteSave'); if (!save) return;
-    save.addEventListener('click', function () { var m = el('voteModal'); if (m) m.classList.remove('is-open'); });
-  })();
+  (function () { var save = el('voteSave'); if (!save) return; save.addEventListener('click', function () { var m = el('voteModal'); if (m) m.classList.remove('is-open'); }); })();
 
-  /* Reporting status + shift view */
+  /* Reporting status (a column in the VCU table) + shift view */
   (function () {
     var body = el('reportBody'); if (!body) return;
-    var labels = { reporting: 'Reporting', nearly: 'Nearly complete', complete: 'Complete' };
-    var classes = { reporting: 'pill--neutral', nearly: 'pill--active', complete: 'pill--done' };
-    function sync(tr) { var s = tr.querySelector('[data-status]'), p = tr.querySelector('[data-pill]'); p.className = 'pill ' + classes[s.value]; p.textContent = labels[s.value]; }
+    var rows = body.querySelectorAll('[data-rep-row]');
     function shift() {
       var t = el('shiftToggle'), on = t && t.getAttribute('aria-pressed') === 'true', n = 0;
-      body.querySelectorAll('tr').forEach(function (tr) {
-        var s = tr.querySelector('[data-status]').value, vis = !on || s === 'nearly' || s === 'complete';
-        tr.style.display = vis ? '' : 'none'; if (vis) n++;
+      rows.forEach(function (row) {
+        var s = row.getAttribute('data-status') || 'reporting';
+        var vis = !on || s === 'nearly' || s === 'complete';
+        row.style.display = vis ? '' : 'none'; if (vis) n++;
       });
-      if (t) t.querySelector('[data-shift-count]').textContent = on ? (n + (n === 1 ? ' county' : ' counties')) : 'off';
+      if (t) { var c = t.querySelector('[data-shift-count]'); if (c) c.textContent = on ? (n + (n === 1 ? ' VCU' : ' VCUs')) : 'off'; }
     }
-    body.querySelectorAll('tr').forEach(function (tr) { var s = tr.querySelector('[data-status]'); s.addEventListener('change', function () { sync(tr); shift(); }); sync(tr); });
     var t = el('shiftToggle');
-    if (t) t.addEventListener('click', function () {
-      var on = t.getAttribute('aria-pressed') === 'true';
-      t.setAttribute('aria-pressed', String(!on));
-      t.classList.toggle('vh-button--primary', !on); t.classList.toggle('vh-button--secondary', on);
-      shift();
-    });
+    if (t) t.addEventListener('click', function () { var on = t.getAttribute('aria-pressed') === 'true'; t.setAttribute('aria-pressed', String(!on)); t.classList.toggle('vh-button--primary', !on); t.classList.toggle('vh-button--secondary', on); shift(); });
     shift();
   })();
 
@@ -1276,7 +1313,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
 
   /* Single-file preview: view switching */
   (function () {
-    var titles = { depot: 'Depot', race: 'Governor', reporting: 'Reporting status', "export": 'Export' };
+    var titles = { depot: 'Depot', race: 'Governor', "export": 'Export' };
     var raceOnly = [].slice.call(document.querySelectorAll('[data-race-only]'));
     function show(name) {
       document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('is-active', v.id === 'view-' + name); });
