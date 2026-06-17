@@ -1037,10 +1037,10 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
       <nav class="nav">
         <a class="nav__link" href="#" data-nav="depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="8" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg><span class="nav__label">Depot</span></a>
         <div class="nav__sub">
-          <a class="nav__sublink" href="#" data-goto="race">Governor</a>
-          <a class="nav__sublink" href="#" data-goto="race">U.S. Senate</a>
-          <a class="nav__sublink" href="#" data-goto="race">Attorney General</a>
-          <a class="nav__sublink" href="#" data-goto="race">U.S. House · District 3</a>
+          <a class="nav__sublink" href="#" data-goto="race" data-race="gov">Governor</a>
+          <a class="nav__sublink" href="#" data-goto="race" data-race="sen">U.S. Senate</a>
+          <a class="nav__sublink" href="#" data-goto="race" data-race="ag">Attorney General</a>
+          <a class="nav__sublink" href="#" data-goto="race" data-race="house">U.S. House · District 3</a>
         </div>
         <a class="nav__link" href="#" data-nav="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="m8 11 4 4 4-4"/><path d="M5 19h14"/></svg><span class="nav__label">Export</span></a>
       </nav>
@@ -1070,12 +1070,7 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
             <div class="table-card"><div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>ID</th><th>Race</th><th>Poll close</th><th>Call</th><th>Leader</th><th>Incumbent</th><th class="num">Margin</th><th class="num">Votes reported</th><th class="num">Est. % in</th></tr></thead>
-                <tbody id="depotBody">
-                  <tr><td class="muted">101</td><td><a class="race-link" href="#" data-goto="race">Governor</a></td><td>7:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate A</td><td>Candidate A</td><td class="num">+6.8%</td><td class="num">614,500</td><td class="num">42%</td></tr>
-                  <tr><td class="muted">102</td><td><a class="race-link" href="#" data-goto="race">U.S. Senate</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate D</td><td>Candidate E</td><td class="num">+2.0%</td><td class="num">345,700</td><td class="num">29%</td></tr>
-                  <tr><td class="muted">103</td><td><a class="race-link" href="#" data-goto="race">Attorney General</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="muted">&mdash;</td><td>Candidate G</td><td class="num muted">&mdash;</td><td class="num">0</td><td class="num">0%</td></tr>
-                  <tr><td class="muted">104</td><td><a class="race-link" href="#" data-goto="race">U.S. House &middot; District 3</a></td><td>7:30 PM ET</td><td><span class="pill pill--done">Called</span></td><td class="leader">Candidate J</td><td>&mdash;</td><td class="num">+17.0%</td><td class="num">135,000</td><td class="num">90%</td></tr>
-                </tbody>
+                <tbody id="depotBody"></tbody>
               </table>
             </div></div>
         </div></section>
@@ -1084,30 +1079,16 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
         <section>
           <p class="eyebrow">Header</p>
           <div class="stat-strip">
-            <div class="stat"><div class="stat__label">Votes reported</div><div class="stat__value">614,500</div></div>
-            <div class="stat"><div class="stat__label">Total votes expected</div><div class="stat__value">1,450,000</div></div>
-            <div class="stat">
-              <div class="stat__label">Reported</div>
-              <div class="stat__value"><span id="hdrPct">42</span><small>%</small></div>
-              <div class="progress"><div class="progress__bar" style="width:42%"></div></div>
-            </div>
+            <div class="stat"><div class="stat__label">Votes reported</div><div class="stat__value" id="hdrReported">0</div></div>
+            <div class="stat"><div class="stat__label">Total votes expected</div><div class="stat__value" id="hdrExpected">0</div></div>
+            <div class="stat"><div class="stat__label">Reported</div><div class="stat__value"><span id="hdrPct">0</span><small>%</small></div><div class="progress"><div class="progress__bar" id="hdrBar" style="width:0%"></div></div></div>
           </div>
         </section>
 
         <section class="panel">
-          <div class="panel__head">
-            <h2 class="panel__title">Race call</h2>
-            <span class="pill pill--neutral" id="callState">Uncalled</span>
-          </div>
+          <div class="panel__head"><h2 class="panel__title">Race call</h2><span class="pill pill--neutral" id="callState">Uncalled</span></div>
           <div class="panel__row">
-            <div class="vh-field" style="min-width:220px">
-              <label class="vh-field__label" for="callCandidate">Winner</label>
-              <select id="callCandidate" class="vh-input">
-                <option value="A" data-party="D">Candidate A</option>
-                <option value="B" data-party="R">Candidate B</option>
-                <option value="C" data-party="I">Candidate C</option>
-              </select>
-            </div>
+            <div class="vh-field" style="min-width:220px"><label class="vh-field__label" for="callCandidate">Winner</label><select id="callCandidate" class="vh-input"></select></div>
             <button class="vh-button vh-button--secondary" id="advanceBtn">Advance</button>
             <button class="vh-button vh-button--constructive" id="callBtn">Call winner</button>
             <button class="vh-button vh-button--secondary" id="graphicBtn">Create graphic</button>
@@ -1117,43 +1098,17 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
 
         <section>
           <p class="eyebrow">Topline</p>
-          <div class="table-card"><div class="table-scroll">
-            <table class="tbl">
-              <thead><tr><th>Candidate</th><th>Party</th><th class="num">Votes</th><th class="num">%</th></tr></thead>
-              <tbody>
-                <tr><td class="leader">Candidate A<span class="incumbent" title="Incumbent">*</span></td><td>D</td><td class="num">325,000</td><td class="num">52.9%</td></tr>
-                <tr><td>Candidate B</td><td>R</td><td class="num">283,000</td><td class="num">46.1%</td></tr>
-                <tr><td>Candidate C</td><td>I</td><td class="num">6,500</td><td class="num">1.1%</td></tr>
-              </tbody>
-            </table>
-          </div></div>
+          <div class="table-card"><div class="table-scroll"><table class="tbl"><thead><tr><th>Candidate</th><th>Party</th><th class="num">Votes</th><th class="num">%</th></tr></thead><tbody id="toplineBody"></tbody></table></div></div>
         </section>
 
         <section>
-          <div class="section-head">
-            <p class="eyebrow">By VCU</p>
-            <button class="vh-button vh-button--secondary vh-button-sm" id="shiftToggle" aria-pressed="false">Shift view · <span data-shift-count>off</span></button>
-          </div>
-          <div class="table-card"><div class="table-scroll">
-            <table class="tbl">
-              <thead>
-                <tr class="group-head"><th colspan="7"></th><th colspan="3" class="col-sep">Raw votes</th><th colspan="3" class="col-sep">Percent</th></tr>
-                <tr><th>VCU</th><th>Reporting</th><th>Leader</th><th class="num">Reported</th><th class="num">Remaining</th><th class="num">Expected</th><th class="num">Margin</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th></tr>
-              </thead>
-              <tbody id="reportBody">
-                <tr data-rep-row data-status="reporting"><td>Ash County</td><td><span class="pill pill--neutral">Reporting</span></td><td class="leader">Candidate A</td><td class="num">172,000</td><td class="num">188,000</td><td class="num">360,000</td><td class="num">+5.8%</td><td class="num col-sep">90,000</td><td class="num">80,000</td><td class="num">2,000</td><td class="num col-sep">52.3%</td><td class="num">46.5%</td><td class="num">1.2%</td></tr>
-                <tr data-rep-row data-status="nearly"><td>Birch County</td><td><span class="pill pill--active">Nearly complete</span></td><td class="leader">Candidate B</td><td class="num">124,500</td><td class="num">175,500</td><td class="num">300,000</td><td class="num">+2.4%</td><td class="num col-sep">60,000</td><td class="num">63,000</td><td class="num">1,500</td><td class="num col-sep">48.2%</td><td class="num">50.6%</td><td class="num">1.2%</td></tr>
-                <tr data-rep-row data-status="complete"><td>Dale County</td><td><span class="pill pill--done">Complete</span></td><td class="leader">Candidate A</td><td class="num">318,000</td><td class="num">222,000</td><td class="num">540,000</td><td class="num">+11.0%</td><td class="num col-sep">175,000</td><td class="num">140,000</td><td class="num">3,000</td><td class="num col-sep">55.0%</td><td class="num">44.0%</td><td class="num">0.9%</td></tr>
-              </tbody>
-            </table>
-          </div></div>
+          <div class="section-head"><p class="eyebrow">By VCU</p><button class="vh-button vh-button--secondary vh-button-sm" id="shiftToggle" aria-pressed="false">Shift view · <span data-shift-count>off</span></button></div>
+          <div class="table-card"><div class="table-scroll"><table class="tbl"><thead id="vcuHead"></thead><tbody id="reportBody"></tbody></table></div></div>
         </section>
 
         <section>
           <p class="eyebrow">Map</p>
-          <div class="map map--empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4 6 2 5-2v14l-5 2-6-2-5 2V6z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg>
-          </div>
+          <div class="map map--empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4 6 2 5-2v14l-5 2-6-2-5 2V6z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg></div>
         </section>
         </div></section>
 
@@ -1182,9 +1137,9 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
     <div class="modal">
       <h2 class="modal__title" id="voteModalTitle">Enter votes</h2>
       <div class="modal__grid">
-        <div class="vh-field"><label class="vh-field__label" for="voteRace">Race</label><select id="voteRace" class="vh-input"><option>Governor</option><option>U.S. Senate</option><option>Attorney General</option><option>U.S. House &middot; District 3</option></select></div>
-        <div class="vh-field"><label class="vh-field__label" for="voteVcu">VCU</label><select id="voteVcu" class="vh-input"><option>Ash County</option><option>Birch County</option><option>Dale County</option></select></div>
-        <div class="vh-field"><label class="vh-field__label" for="voteCandidate">Candidate</label><select id="voteCandidate" class="vh-input"><option>Candidate A</option><option>Candidate B</option><option>Candidate C</option></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteRace">Race</label><select id="voteRace" class="vh-input"></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteVcu">VCU</label><select id="voteVcu" class="vh-input"></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteCandidate">Candidate</label><select id="voteCandidate" class="vh-input"></select></div>
         <div class="vh-field"><label class="vh-field__label" for="voteCount">Votes</label><input id="voteCount" class="vh-input" type="number" inputmode="numeric" min="0" placeholder="0"></div>
       </div>
       <div class="modal__actions">
@@ -1205,13 +1160,10 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
         <div class="graphic-card__body">
           <div class="graphic-card__eyebrow" id="gEyebrow">Race call</div>
           <h3 class="graphic-card__race" id="gRace">Governor</h3>
-          <div class="graphic-card__winner">
-            <span class="graphic-card__check" id="gCheck" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span>
-            <span id="gWinner">Candidate A</span>
-          </div>
+          <div class="graphic-card__winner"><span class="graphic-card__check" id="gCheck" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span><span id="gWinner">Candidate A</span></div>
           <div class="graphic-card__party" id="gParty">Party D</div>
         </div>
-        <div class="graphic-card__foot"><span>VoteHub</span><span id="gReported">42% reported</span></div>
+        <div class="graphic-card__foot"><span>VoteHub</span><span id="gReported">0% reported</span></div>
       </div>
       <div class="modal__actions">
         <button class="vh-button vh-button--secondary vh-button-sm" data-close-modal>Close</button>
@@ -1220,110 +1172,194 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm)
     </div>
   </div>
   <script>
-/* VoteHub Console — UI mock. Static pages with light interactivity only. */
-(function () {
-  if (typeof document === 'undefined') return;
+/* VoteHub Console — UI mock. A small per-race dataset so each race renders its own page. */
+
+var RACES = {
+  gov: {
+    id: 101, title: 'Governor', pollClose: '7:00 PM ET', call: 'uncalled', winner: 'A',
+    cands: [{ k: 'A', name: 'Candidate A', party: 'D', inc: true }, { k: 'B', name: 'Candidate B', party: 'R' }, { k: 'C', name: 'Candidate C', party: 'I' }],
+    vcus: [
+      { name: 'Ash County', exp: 360000, status: 'reporting', v: { A: 90000, B: 80000, C: 2000 } },
+      { name: 'Birch County', exp: 300000, status: 'nearly', v: { A: 60000, B: 63000, C: 1500 } },
+      { name: 'Dale County', exp: 540000, status: 'complete', v: { A: 175000, B: 140000, C: 3000 } }
+    ]
+  },
+  sen: {
+    id: 102, title: 'U.S. Senate', pollClose: '8:00 PM ET', call: 'uncalled', winner: 'D',
+    cands: [{ k: 'D', name: 'Candidate D', party: 'D' }, { k: 'E', name: 'Candidate E', party: 'R', inc: true }, { k: 'F', name: 'Candidate F', party: 'I' }],
+    vcus: [
+      { name: 'Ash County', exp: 320000, status: 'reporting', v: { D: 52000, E: 49000, F: 1500 } },
+      { name: 'Birch County', exp: 280000, status: 'reporting', v: { D: 40000, E: 42000, F: 1200 } },
+      { name: 'Dale County', exp: 370000, status: 'nearly', v: { D: 82000, E: 76000, F: 2000 } }
+    ]
+  },
+  ag: {
+    id: 103, title: 'Attorney General', pollClose: '8:00 PM ET', call: 'uncalled', winner: 'G',
+    cands: [{ k: 'G', name: 'Candidate G', party: 'R', inc: true }, { k: 'H', name: 'Candidate H', party: 'D' }],
+    vcus: [
+      { name: 'Ash County', exp: 360000, status: 'reporting', v: { G: 0, H: 0 } },
+      { name: 'Birch County', exp: 300000, status: 'reporting', v: { G: 0, H: 0 } },
+      { name: 'Dale County', exp: 540000, status: 'reporting', v: { G: 0, H: 0 } }
+    ]
+  },
+  house: {
+    id: 104, title: 'U.S. House \u00b7 District 3', pollClose: '7:30 PM ET', call: 'called', winner: 'J',
+    cands: [{ k: 'J', name: 'Candidate J', party: 'D' }, { k: 'K', name: 'Candidate K', party: 'R' }],
+    vcus: [
+      { name: 'Ash County', exp: 60000, status: 'complete', v: { J: 30100, K: 22800 } },
+      { name: 'Dale County', exp: 90000, status: 'complete', v: { J: 48900, K: 33200 } }
+    ]
+  }
+};
+var ORDER = ['gov', 'sen', 'ag', 'house'];
+var REP = { reporting: ['pill--neutral', 'Reporting'], nearly: ['pill--active', 'Nearly complete'], complete: ['pill--done', 'Complete'] };
+var CALL = { uncalled: ['pill--neutral', 'Uncalled'], advanced: ['pill--active', 'Advanced'], called: ['pill--done', 'Called'] };
+var current = 'gov';
+function R() { return RACES[current]; }
+function cand(r, k) { for (var i = 0; i < r.cands.length; i++) if (r.cands[i].k === k) return r.cands[i]; return null; }
+
+/* pure compute */
+function reportedOf(r, v) { var s = 0; r.cands.forEach(function (c) { s += (v.v[c.k] || 0); }); return s; }
+function leaderOf(r, v) { var rep = reportedOf(r, v); if (!rep) return null; var t = null; r.cands.forEach(function (c) { if (!t || (v.v[c.k] || 0) > (v.v[t.k] || 0)) t = c; }); return t; }
+function marginOf(r, v) { var rep = reportedOf(r, v); if (!rep) return null; var a = r.cands.map(function (c) { return v.v[c.k] || 0; }).sort(function (x, y) { return y - x; }); return (a[0] - (a[1] || 0)) / rep * 100; }
+function totalsOf(r) { var t = {}, g = 0; r.cands.forEach(function (c) { var s = 0; r.vcus.forEach(function (v) { s += (v.v[c.k] || 0); }); t[c.k] = s; g += s; }); return { t: t, g: g }; }
+function expectedOf(r) { var s = 0; r.vcus.forEach(function (v) { s += v.exp; }); return s; }
+function headerOf(r) { var g = totalsOf(r).g, e = expectedOf(r); return { rep: g, exp: e, pct: e ? g / e * 100 : 0 }; }
+function toplineLeader(r) { var tt = totalsOf(r); if (!tt.g) return null; var t = null; r.cands.forEach(function (c) { if (!t || tt.t[c.k] > tt.t[t.k]) t = c; }); return t; }
+function toplineMargin(r) { var tt = totalsOf(r); if (!tt.g) return null; var a = r.cands.map(function (c) { return tt.t[c.k]; }).sort(function (x, y) { return y - x; }); return (a[0] - (a[1] || 0)) / tt.g * 100; }
+
+if (typeof module !== 'undefined' && module.exports) module.exports = { RACES: RACES, reportedOf: reportedOf, leaderOf: leaderOf, marginOf: marginOf, totalsOf: totalsOf, headerOf: headerOf, toplineLeader: toplineLeader, toplineMargin: toplineMargin };
+
+if (typeof document !== 'undefined') {
   function el(id) { return document.getElementById(id); }
+  function fmt(n) { return (n || 0).toLocaleString('en-US'); }
+  function pc(n) { return (n || 0).toFixed(1) + '%'; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
-  /* Collapsible panels + modal open/close */
+  function renderDepot() {
+    var body = el('depotBody'); if (!body) return;
+    body.innerHTML = ORDER.map(function (k) {
+      var r = RACES[k], h = headerOf(r), lead = toplineLeader(r), inc = r.cands.filter(function (c) { return c.inc; })[0], m = toplineMargin(r), cl = CALL[r.call];
+      return '<tr>' +
+        '<td class="muted">' + r.id + '</td>' +
+        '<td><a class="race-link" href="race.html?race=' + k + '" data-goto="race" data-race="' + k + '">' + esc(r.title) + '</a></td>' +
+        '<td>' + r.pollClose + '</td>' +
+        '<td><span class="pill ' + cl[0] + '">' + cl[1] + '</span></td>' +
+        '<td class="' + (lead ? 'leader' : 'muted') + '">' + (lead ? esc(lead.name) : '\u2014') + '</td>' +
+        '<td>' + (inc ? esc(inc.name) : '\u2014') + '</td>' +
+        '<td class="num' + (m == null ? ' muted' : '') + '">' + (m == null ? '\u2014' : '+' + m.toFixed(1) + '%') + '</td>' +
+        '<td class="num">' + fmt(h.rep) + '</td>' +
+        '<td class="num">' + Math.round(h.pct) + '%</td>' +
+        '</tr>';
+    }).join('');
+    var input = el('depotSearch'); if (input && input.value) input.dispatchEvent(new Event('input'));
+  }
+
+  function renderHeader() { if (!el('hdrReported')) return; var h = headerOf(R()); el('hdrReported').textContent = fmt(h.rep); el('hdrExpected').textContent = fmt(h.exp); el('hdrPct').textContent = Math.round(h.pct); var b = el('hdrBar'); if (b) b.style.width = h.pct.toFixed(1) + '%'; }
+  function renderTopline() { var body = el('toplineBody'); if (!body) return; var r = R(), tt = totalsOf(r), lead = toplineLeader(r); body.innerHTML = r.cands.map(function (c) { var L = lead && c.k === lead.k; var p = tt.g ? tt.t[c.k] / tt.g * 100 : 0; return '<tr><td class="' + (L ? 'leader' : '') + '">' + esc(c.name) + (c.inc ? '<span class="incumbent" title="Incumbent">*</span>' : '') + '</td><td>' + c.party + '</td><td class="num">' + fmt(tt.t[c.k]) + '</td><td class="num">' + pc(p) + '</td></tr>'; }).join(''); }
+  function renderVcu() {
+    var head = el('vcuHead'), body = el('reportBody'); if (!head || !body) return; var r = R(), n = r.cands.length;
+    var raw = r.cands.map(function (c, i) { return '<th class="num' + (i === 0 ? ' col-sep' : '') + '">' + c.k + '</th>'; }).join('');
+    var pctH = r.cands.map(function (c, i) { return '<th class="num' + (i === 0 ? ' col-sep' : '') + '">' + c.k + '</th>'; }).join('');
+    head.innerHTML = '<tr class="group-head"><th colspan="7"></th><th colspan="' + n + '" class="col-sep">Raw votes</th><th colspan="' + n + '" class="col-sep">Percent</th></tr>' +
+      '<tr><th>VCU</th><th>Reporting</th><th>Leader</th><th class="num">Reported</th><th class="num">Remaining</th><th class="num">Expected</th><th class="num">Margin</th>' + raw + pctH + '</tr>';
+    body.innerHTML = r.vcus.map(function (v) {
+      var rep = reportedOf(r, v), L = leaderOf(r, v), m = marginOf(r, v), rem = Math.max(v.exp - rep, 0), st = REP[v.status] || REP.reporting;
+      var rawC = r.cands.map(function (c, i) { return '<td class="num' + (i === 0 ? ' col-sep' : '') + (rep === 0 ? ' muted' : '') + '">' + (rep === 0 ? '\u2014' : fmt(v.v[c.k] || 0)) + '</td>'; }).join('');
+      var pctC = r.cands.map(function (c, i) { return '<td class="num' + (i === 0 ? ' col-sep' : '') + (rep === 0 ? ' muted' : '') + '">' + (rep === 0 ? '\u2014' : pc((v.v[c.k] || 0) / rep * 100)) + '</td>'; }).join('');
+      return '<tr data-rep-row data-status="' + v.status + '"><td>' + esc(v.name) + '</td><td><span class="pill ' + st[0] + '">' + st[1] + '</span></td><td class="' + (L ? 'leader' : 'muted') + '">' + (L ? esc(L.name) : '\u2014') + '</td><td class="num">' + fmt(rep) + '</td><td class="num">' + fmt(rem) + '</td><td class="num">' + fmt(v.exp) + '</td><td class="num' + (m == null ? ' muted' : '') + '">' + (m == null ? '\u2014' : '+' + m.toFixed(1) + '%') + '</td>' + rawC + pctC + '</tr>';
+    }).join('');
+    applyShift();
+  }
+  function renderCall() {
+    var sel = el('callCandidate'); if (!sel) return; var r = R();
+    sel.innerHTML = r.cands.map(function (c) { return '<option value="' + c.k + '" data-party="' + c.party + '">' + esc(c.name) + '</option>'; }).join('');
+    sel.value = r.winner;
+    var pill = el('callState'); if (!pill) return; var cl = CALL[r.call], w = cand(r, r.winner);
+    pill.className = 'pill ' + cl[0];
+    pill.textContent = (r.call === 'uncalled') ? 'Uncalled' : (cl[1] + ' \u00b7 ' + (w ? w.name : ''));
+  }
+  function refreshVoteSelects() {
+    var r = R(), rs = el('voteRace'), vs = el('voteVcu'), cs = el('voteCandidate');
+    if (rs) { rs.innerHTML = ORDER.map(function (k) { return '<option value="' + k + '">' + esc(RACES[k].title) + '</option>'; }).join(''); rs.value = current; }
+    if (vs) vs.innerHTML = r.vcus.map(function (v) { return '<option>' + esc(v.name) + '</option>'; }).join('');
+    if (cs) cs.innerHTML = r.cands.map(function (c) { return '<option>' + esc(c.name) + '</option>'; }).join('');
+  }
+  function markSublink() { document.querySelectorAll('.nav__sublink[data-race]').forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-race') === current); }); }
+  function setRace(key) {
+    if (!RACES[key]) return; current = key;
+    renderHeader(); renderTopline(); renderVcu(); renderCall(); refreshVoteSelects(); markSublink();
+    if (el('raceTitle')) el('raceTitle').textContent = R().title;
+    if (el('raceId')) el('raceId').textContent = 'ID ' + R().id;
+    if (el('pageTitle') && el('view-race') && el('view-race').classList.contains('is-active')) el('pageTitle').textContent = R().title;
+  }
+
+  function applyShift() {
+    var body = el('reportBody'); if (!body) return; var t = el('shiftToggle'), on = t && t.getAttribute('aria-pressed') === 'true', n = 0;
+    body.querySelectorAll('[data-rep-row]').forEach(function (row) { var s = row.getAttribute('data-status') || 'reporting'; var vis = !on || s === 'nearly' || s === 'complete'; row.style.display = vis ? '' : 'none'; if (vis) n++; });
+    if (t) { var c = t.querySelector('[data-shift-count]'); if (c) c.textContent = on ? (n + (n === 1 ? ' VCU' : ' VCUs')) : 'off'; }
+  }
+
+  /* collapse + modal */
   document.addEventListener('click', function (e) {
-    var col = e.target.closest('[data-collapse]');
-    if (col) { var panel = col.closest('[data-collapsible]'); if (panel) { var c = panel.classList.toggle('is-collapsed'); col.setAttribute('aria-expanded', String(!c)); } return; }
-    var o = e.target.closest('[data-open-modal]');
-    if (o) { var m = document.querySelector(o.getAttribute('data-open-modal')); if (m) m.classList.add('is-open'); return; }
-    if (e.target.closest('[data-close-modal]') || e.target.classList.contains('modal-overlay')) {
-      var ov = e.target.closest('.modal-overlay'); if (ov) ov.classList.remove('is-open');
-    }
+    var col = e.target.closest('[data-collapse]'); if (col) { var p = col.closest('[data-collapsible]'); if (p) { var c = p.classList.toggle('is-collapsed'); col.setAttribute('aria-expanded', String(!c)); } return; }
+    var o = e.target.closest('[data-open-modal]'); if (o) { var m = document.querySelector(o.getAttribute('data-open-modal')); if (m) m.classList.add('is-open'); return; }
+    if (e.target.closest('[data-close-modal]') || e.target.classList.contains('modal-overlay')) { var ov = e.target.closest('.modal-overlay'); if (ov) ov.classList.remove('is-open'); }
   });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.is-open').forEach(function (m) { m.classList.remove('is-open'); });
-  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.is-open').forEach(function (m) { m.classList.remove('is-open'); }); });
 
-  /* Depot filter (full Depot table) */
-  (function () {
-    var input = el('depotSearch'), body = el('depotBody'); if (!input || !body) return;
-    function run() {
-      var q = input.value.toLowerCase(), n = 0;
-      body.querySelectorAll('tr').forEach(function (tr) { var hit = tr.textContent.toLowerCase().indexOf(q) !== -1; tr.style.display = hit ? '' : 'none'; if (hit) n++; });
-      var c = el('depotCount'); if (c) c.textContent = n + (n === 1 ? ' race' : ' races');
-    }
-    input.addEventListener('input', run); run();
-  })();
+  /* depot filter */
+  (function () { var input = el('depotSearch'), body = el('depotBody'); if (!input || !body) return; input.addEventListener('input', function () { var q = input.value.toLowerCase(), n = 0; body.querySelectorAll('tr').forEach(function (tr) { var hit = tr.textContent.toLowerCase().indexOf(q) !== -1; tr.style.display = hit ? '' : 'none'; if (hit) n++; }); var c = el('depotCount'); if (c) c.textContent = n + (n === 1 ? ' race' : ' races'); }); })();
 
-  /* Race call + create-graphic */
+  /* race call */
   (function () {
     var sel = el('callCandidate'), pill = el('callState'); if (!pill) return;
-    function who() { return sel ? sel.options[sel.selectedIndex].text : ''; }
-    function set(status) {
-      if (status === 'called') { pill.className = 'pill pill--done'; pill.textContent = 'Called \u00b7 ' + who(); }
-      else if (status === 'advanced') { pill.className = 'pill pill--active'; pill.textContent = 'Advanced \u00b7 ' + who(); }
-      else { pill.className = 'pill pill--neutral'; pill.textContent = 'Uncalled'; }
-    }
-    if (el('advanceBtn')) el('advanceBtn').addEventListener('click', function () { set('advanced'); });
-    if (el('callBtn')) el('callBtn').addEventListener('click', function () { set('called'); });
-    if (el('resetBtn')) el('resetBtn').addEventListener('click', function () { set('uncalled'); });
-    if (sel) sel.addEventListener('change', function () { if (pill.classList.contains('pill--done')) set('called'); else if (pill.classList.contains('pill--active')) set('advanced'); });
-    var gb = el('graphicBtn');
-    if (gb) gb.addEventListener('click', function () {
-      var rt = el('raceTitle') || el('pageTitle');
-      if (el('gRace') && rt) el('gRace').textContent = rt.textContent;
-      if (el('gWinner')) el('gWinner').textContent = who();
-      var party = sel ? sel.options[sel.selectedIndex].getAttribute('data-party') : '';
-      if (el('gParty')) el('gParty').textContent = party ? ('Party ' + party) : '';
-      var called = pill.classList.contains('pill--done');
-      if (el('gEyebrow')) el('gEyebrow').textContent = called ? 'Projected winner' : (pill.classList.contains('pill--active') ? 'Advancing' : 'Race call');
+    if (el('advanceBtn')) el('advanceBtn').addEventListener('click', function () { R().call = 'advanced'; R().winner = sel.value; renderCall(); renderDepot(); });
+    if (el('callBtn')) el('callBtn').addEventListener('click', function () { R().call = 'called'; R().winner = sel.value; renderCall(); renderDepot(); });
+    if (el('resetBtn')) el('resetBtn').addEventListener('click', function () { R().call = 'uncalled'; renderCall(); renderDepot(); });
+    if (sel) sel.addEventListener('change', function () { R().winner = sel.value; renderCall(); renderDepot(); });
+    var gb = el('graphicBtn'); if (gb) gb.addEventListener('click', function () {
+      var w = cand(R(), R().winner);
+      if (el('gRace')) el('gRace').textContent = R().title;
+      if (el('gWinner')) el('gWinner').textContent = w ? w.name : '';
+      if (el('gParty')) el('gParty').textContent = w ? ('Party ' + w.party) : '';
+      var called = R().call === 'called';
+      if (el('gEyebrow')) el('gEyebrow').textContent = called ? 'Projected winner' : (R().call === 'advanced' ? 'Advancing' : 'Race call');
       if (el('gCheck')) el('gCheck').style.display = called ? 'inline-flex' : 'none';
-      var hp = el('hdrPct'); if (el('gReported') && hp) el('gReported').textContent = hp.textContent.replace('%', '') + '% reported';
+      if (el('gReported')) el('gReported').textContent = Math.round(headerOf(R()).pct) + '% reported';
       var m = el('graphicModal'); if (m) m.classList.add('is-open');
     });
   })();
 
-  /* Vote entry form */
-  (function () { var save = el('voteSave'); if (!save) return; save.addEventListener('click', function () { var m = el('voteModal'); if (m) m.classList.remove('is-open'); }); })();
+  /* vote entry: race switch + save closes */
+  (function () { var rs = el('voteRace'), save = el('voteSave'); if (rs) rs.addEventListener('change', function () { setRace(rs.value); }); if (save) save.addEventListener('click', function () { var m = el('voteModal'); if (m) m.classList.remove('is-open'); }); })();
 
-  /* Reporting status (a column in the VCU table) + shift view */
-  (function () {
-    var body = el('reportBody'); if (!body) return;
-    var rows = body.querySelectorAll('[data-rep-row]');
-    function shift() {
-      var t = el('shiftToggle'), on = t && t.getAttribute('aria-pressed') === 'true', n = 0;
-      rows.forEach(function (row) {
-        var s = row.getAttribute('data-status') || 'reporting';
-        var vis = !on || s === 'nearly' || s === 'complete';
-        row.style.display = vis ? '' : 'none'; if (vis) n++;
-      });
-      if (t) { var c = t.querySelector('[data-shift-count]'); if (c) c.textContent = on ? (n + (n === 1 ? ' VCU' : ' VCUs')) : 'off'; }
-    }
-    var t = el('shiftToggle');
-    if (t) t.addEventListener('click', function () { var on = t.getAttribute('aria-pressed') === 'true'; t.setAttribute('aria-pressed', String(!on)); t.classList.toggle('vh-button--primary', !on); t.classList.toggle('vh-button--secondary', on); shift(); });
-    shift();
-  })();
+  /* shift toggle */
+  (function () { var t = el('shiftToggle'); if (!t) return; t.addEventListener('click', function () { var on = t.getAttribute('aria-pressed') === 'true'; t.setAttribute('aria-pressed', String(!on)); t.classList.toggle('vh-button--primary', !on); t.classList.toggle('vh-button--secondary', on); applyShift(); }); })();
 
-  /* Export */
-  (function () {
-    var btn = el('exportBtn'); if (!btn) return;
-    var status = el('exportStatus'), dl = el('downloadBtn');
-    btn.addEventListener('click', function () {
-      if (dl) dl.style.display = 'none'; btn.disabled = true; btn.textContent = 'Preparing\u2026';
-      if (status) { status.style.display = 'inline'; status.textContent = 'Building snapshot'; }
-      setTimeout(function () { btn.disabled = false; btn.textContent = 'Prepare export'; if (status) status.textContent = 'Export ready'; if (dl) dl.style.display = 'inline-flex'; }, 900);
-    });
-  })();
-})();
+  /* export */
+  (function () { var btn = el('exportBtn'); if (!btn) return; var status = el('exportStatus'), dl = el('downloadBtn'); btn.addEventListener('click', function () { if (dl) dl.style.display = 'none'; btn.disabled = true; btn.textContent = 'Preparing\u2026'; if (status) { status.style.display = 'inline'; status.textContent = 'Building snapshot'; } setTimeout(function () { btn.disabled = false; btn.textContent = 'Prepare export'; if (status) status.textContent = 'Export ready'; if (dl) dl.style.display = 'inline-flex'; }, 900); }); })();
 
-  /* Single-file preview: view switching */
+  /* init */
+  (function () { var m = (typeof location !== 'undefined' && location.search.match(/[?&]race=(\w+)/)); if (m && RACES[m[1]]) current = m[1]; renderDepot(); setRace(current); })();
+
+  window.VHConsole = { setRace: setRace, title: function () { return R().title; } };
+}
+
+  /* Single-file preview: view switching + race selection */
   (function () {
     var titles = { depot: 'Depot', race: 'Governor', "export": 'Export' };
     var raceOnly = [].slice.call(document.querySelectorAll('[data-race-only]'));
     function show(name) {
       document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('is-active', v.id === 'view-' + name); });
       document.querySelectorAll('[data-nav]').forEach(function (n) { n.classList.toggle('is-active', n.getAttribute('data-nav') === name); });
-      var t = document.getElementById('pageTitle'); if (t) t.textContent = titles[name] || '';
+      var t = document.getElementById('pageTitle'); if (t) t.textContent = (name === 'race' && window.VHConsole) ? window.VHConsole.title() : (titles[name] || '');
       raceOnly.forEach(function (e) { e.style.display = (name === 'race') ? '' : 'none'; });
       window.scrollTo(0, 0);
     }
     document.addEventListener('click', function (e) {
-      var go = e.target.closest('[data-goto]'); if (go) { e.preventDefault(); show(go.getAttribute('data-goto')); return; }
+      var go = e.target.closest('[data-goto]');
+      if (go) { e.preventDefault(); var rk = go.getAttribute('data-race'); if (rk && window.VHConsole) window.VHConsole.setRace(rk); show(go.getAttribute('data-goto')); return; }
       var nav = e.target.closest('[data-nav]'); if (nav) { e.preventDefault(); show(nav.getAttribute('data-nav')); return; }
     });
     show('depot');
