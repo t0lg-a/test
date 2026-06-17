@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoteHub Console — preview</title>
+  <style>
+:root {
+    /* ----- Typography -------------------------------------------- */
+    --accent-text-primary: #351c71;
+    --accent-text-secondary: #7c3aed;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-muted: #737373;
+    --stroke-soft: #e5e5e5;
+
+    /* ----- Surfaces ---------------------------------------------- */
+    --bg-base: #f8f9fc;
+    --bg-surface: #eef0f7;
+    --bg-elevated: #ffffff;
+
+    /* ----- Primary Button ---------------------------------------- */
+    --primary-bg: #7c3aed;
+    --primary-bg-hover: #6a2fdb;
+    --primary-bg-active: #5a26c7;
+    --primary-text: #ffffff;
+    --primary-focus: #c9b6ff;
+
+    /* ----- Secondary Button -------------------------------------- */
+    --secondary-bg: #ffffff;
+    --secondary-text: #351c71;
+    --secondary-border: #d2d2d7;
+    --secondary-hover: #eef0f7;
+    --secondary-active: #e4e6ef;
+
+    /* ----- Inputs & Controls ------------------------------------- */
+    --field-bg: #f6f0ff;
+    --field-border: #d2d2d7;
+    --field-text: #1a1a1a;
+    --field-placeholder: #737373;
+    --field-focus: #c9b6ff;
+
+    /* ----- Destructive Palette ------------------------------------------- */
+    --destructive-bg: #dc2626;
+    --destructive-text: #ffffff;
+    --destructive-hover: #b91c1c;
+    --destructive-active: #9f1818;
+    --destructive-focus: #fca5a5;
+
+    /* ----- Constructive Palette ------------------------------------------ */
+    --constructive-bg: #2ab56f;
+    --constructive-text: #ffffff;
+    --constructive-hover: #23985d;
+    --constructive-active: #1d7f4d;
+    --constructive-focus: #a7f3d0;
+
+    /* ----- Disabled Palette ---------------------------------------------- */
+    --disabled-text: #c7c7c7;
+    --disabled-bg: #f0f0f0;
+    --disabled-border: #e0e0e0;
+
+    /* ----- Menus, Popovers & Dropdowns ----------------------------------- */
+    --menu-bg: #ffffff;
+    --menu-border: #dcdce7;
+    --menu-divider: #ecebf7;
+    --menu-item-hover: #eef0f7;
+    --menu-item-active: #e4e6ef;
+    --menu-shadow: 0 22px 48px rgba(53, 28, 113, 0.16);
+    --overlay-scrim: rgba(16, 18, 27, 0.32);
+
+    /* ----- Color Series ------------------------------------------ */
+    --series-1: #7c3aed;
+    --series-2: #351c71;
+    --series-3: #c0392b;
+    --series-4: #e67e22;
+    --series-5: #f1c40f;
+    --series-6: #16a085;
+    --series-7: #27ae60;
+    --series-8: #2980b9;
+    --series-9: #8e44ad;
+    --series-10: #2c3e50;
+    --series-11: #7f8c8d;
+    --series-12: #d35400;
+
+    /* Typography scale */
+    --vh-text-xxs: 0.5rem;
+    /* 8px */
+    --vh-text-xs: 0.75rem;
+    /* 12px */
+    --vh-text-sm: 0.875rem;
+    /* 14px */
+    --vh-text-md: 1rem;
+    /* 16px */
+    --vh-text-lg: 1.25rem;
+    /* 20px */
+    --vh-text-xl: 1.5rem;
+    /* 24px */
+    --vh-text-2xl: 2rem;
+    /* 32px */
+    --vh-text-3xl: 2.5rem;
+    /* 40px */
+
+    /* Line-height pairings */
+    --vh-leading-tight: 1.1;
+    --vh-leading-standard: 1.4;
+    --vh-leading-relaxed: 1.6;
+
+    /* Button height + horizontal padding pattern */
+    --vh-button-height-xs: 2rem;
+    /* 32px */
+    --vh-button-height-sm: 2.5rem;
+    /* 40px */
+    --vh-button-height-md: 3rem;
+    /* 48px */
+    --vh-button-height-lg: 3.5rem;
+    /* 56px */
+
+    --vh-button-padding-xs: 0 0.75rem;
+    --vh-button-padding-sm: 0 1rem;
+    --vh-button-padding-md: 0 1.25rem;
+    --vh-button-padding-lg: 0 1.5rem;
+
+    --vh-button-radius-xs: 4px;
+    --vh-button-radius-sm: 6px;
+    --vh-button-radius-md: 8px;
+    --vh-button-radius-lg: 10px;
+}
+
+/* ==========================================================================
+   Global Resets & Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 0.8rem 0;
+    font-family: "TT Norms Pro", "Avenir Next", -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    line-height: var(--vh-leading-tight);
+}
+
+
+a {
+    color: var(--accent-text-secondary);
+    text-decoration: none;
+    transition: color 160ms ease;
+}
+
+a:hover,
+a:focus-visible {
+    color: var(--accent-text-primary);
+}
+
+ul,
+ol {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    background: none;
+    border: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary-focus) 40%, transparent);
+}
+
+::selection {
+    background: color-mix(in srgb, var(--accent-text-secondary) 25%, transparent);
+}
+
+/* ==========================================================================
+   Typography Utilities
+   ========================================================================== */
+
+.vh-text-xxs {
+    font-size: var(--vh-text-xxs);
+    line-height: var(--vh-leading-standard);
+}
+
+.vh-text-xs {
+    font-size: var(--vh-text-xs);
+    line-height: var(--vh-leading-standard);
+}
+
+.vh-text-sm {
+    font-size: var(--vh-text-sm);
+    line-height: var(--vh-leading-standard);
+}
+
+.vh-text-md {
+    font-size: var(--vh-text-md);
+    line-height: var(--vh-leading-standard);
+}
+
+.vh-text-lg {
+    font-size: var(--vh-text-lg);
+    line-height: var(--vh-leading-tight);
+}
+
+.vh-text-xl {
+    font-size: var(--vh-text-xl);
+    line-height: var(--vh-leading-tight);
+}
+
+.vh-text-2xl {
+    font-size: var(--vh-text-2xl);
+    line-height: var(--vh-leading-tight);
+}
+
+.vh-text-3xl {
+    font-size: var(--vh-text-3xl);
+    line-height: var(--vh-leading-tight);
+}
+
+.vh-text-muted {
+    color: var(--text-muted);
+}
+
+.vh-text-uppercase {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.vh-weight-medium {
+    font-weight: 500;
+}
+
+.vh-weight-semibold {
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Button System
+   ========================================================================== */
+
+.vh-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: var(--vh-button-radius-md);
+    padding: var(--vh-button-padding-md);
+    min-height: var(--vh-button-height-md);
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease,
+        color 160ms ease, box-shadow 160ms ease;
+}
+
+.vh-button:focus-visible {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary-focus) 35%, transparent);
+}
+
+.vh-button[disabled],
+.vh-button.is-disabled {
+    cursor: not-allowed;
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+    border-color: var(--disabled-border);
+    box-shadow: none;
+}
+
+.vh-button--primary {
+    background-color: var(--primary-bg);
+    color: var(--primary-text);
+}
+
+.vh-button--primary:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--primary-bg-hover);
+}
+
+.vh-button--primary:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--primary-bg-active);
+}
+
+.vh-button--secondary {
+    background-color: var(--secondary-bg);
+    color: var(--secondary-text);
+    border-color: var(--secondary-border);
+}
+
+.vh-button--secondary:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--secondary-hover);
+}
+
+.vh-button--secondary:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--secondary-active);
+}
+
+.vh-button--constructive {
+    background-color: var(--constructive-bg);
+    color: var(--constructive-text);
+}
+
+.vh-button--constructive:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--constructive-hover);
+}
+
+.vh-button--constructive:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--constructive-active);
+}
+
+.vh-button--destructive {
+    background-color: var(--destructive-bg);
+    color: var(--destructive-text);
+}
+
+.vh-button--destructive:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--destructive-hover);
+}
+
+.vh-button--destructive:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--destructive-active);
+}
+
+.vh-button--ghost {
+    background-color: transparent;
+    color: var(--accent-text-primary);
+    border-color: transparent;
+}
+
+.vh-button--ghost:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--secondary-hover);
+}
+
+.vh-button--ghost:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--secondary-active);
+}
+
+.vh-button-xs {
+    font-size: var(--vh-text-xs);
+    min-height: var(--vh-button-height-xs);
+    padding: var(--vh-button-padding-xs);
+    border-radius: var(--vh-button-radius-xs);
+}
+
+.vh-button-sm {
+    font-size: var(--vh-text-sm);
+    min-height: var(--vh-button-height-sm);
+    padding: var(--vh-button-padding-sm);
+    border-radius: var(--vh-button-radius-sm);
+}
+
+.vh-button-md {
+    font-size: var(--vh-text-md);
+    min-height: var(--vh-button-height-md);
+    padding: var(--vh-button-padding-md);
+    border-radius: var(--vh-button-radius-md);
+}
+
+.vh-button-lg {
+    font-size: var(--vh-text-lg);
+    min-height: var(--vh-button-height-lg);
+    padding: var(--vh-button-padding-lg);
+    border-radius: var(--vh-button-radius-lg);
+}
+
+/* Icon-only buttons */
+.vh-button--icon {
+    padding: 0;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-width: 2px;
+    border-radius: 12px;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.vh-button--icon svg {
+    width: 60%;
+    height: 60%;
+}
+
+.vh-button--icon.vh-button-xs {
+    width: var(--vh-button-height-xs);
+    height: var(--vh-button-height-xs);
+}
+
+.vh-button--icon.vh-button-sm {
+    width: var(--vh-button-height-sm);
+    height: var(--vh-button-height-sm);
+}
+
+.vh-button--icon.vh-button-md {
+    width: var(--vh-button-height-md);
+    height: var(--vh-button-height-md);
+}
+
+.vh-button--icon.vh-button-lg {
+    width: var(--vh-button-height-lg);
+    height: var(--vh-button-height-lg);
+}
+
+.vh-button--icon.vh-button--secondary {
+    background: var(--secondary-bg);
+    border-color: var(--secondary-border);
+    color: var(--secondary-text);
+}
+
+.vh-button--icon.vh-button--secondary:hover:not([disabled]):not(.is-disabled) {
+    background: var(--secondary-hover);
+}
+
+.vh-button--icon.vh-button--secondary:active:not([disabled]):not(.is-disabled) {
+    background: var(--secondary-active);
+}
+
+.vh-button--icon.vh-button--primary {
+    background-color: var(--primary-bg);
+    border-color: var(--primary-focus);
+    color: var(--primary-text);
+}
+
+.vh-button--icon.vh-button--primary:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--primary-bg-hover);
+    border-color: var(--primary-focus);
+}
+
+.vh-button--icon.vh-button--primary:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--primary-bg-active);
+    border-color: var(--primary-focus);
+}
+
+.vh-button--icon.vh-button--constructive {
+    background-color: var(--constructive-bg);
+    border-color: var(--constructive-focus);
+    color: var(--constructive-text);
+}
+
+.vh-button--icon.vh-button--constructive:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--constructive-hover);
+    border-color: var(--constructive-focus);
+}
+
+.vh-button--icon.vh-button--constructive:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--constructive-active);
+    border-color: var(--constructive-focus);
+}
+
+.vh-button--icon.vh-button--destructive {
+    background-color: var(--destructive-bg);
+    border-color: var(--destructive-focus);
+    color: var(--destructive-text);
+}
+
+.vh-button--icon.vh-button--destructive:hover:not([disabled]):not(.is-disabled) {
+    background-color: var(--destructive-hover);
+    border-color: var(--destructive-focus);
+}
+
+.vh-button--icon.vh-button--destructive:active:not([disabled]):not(.is-disabled) {
+    background-color: var(--destructive-active);
+    border-color: var(--destructive-focus);
+}
+
+/* ==========================================================================
+   Form & Input System
+   ========================================================================== */
+
+.vh-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.vh-field__label {
+    font-size: var(--vh-text-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.vh-field__hint {
+    font-size: var(--vh-text-xs);
+    color: var(--text-muted);
+}
+
+.vh-input,
+.vh-textarea {
+    appearance: none;
+    font-family: inherit;
+    font-size: var(--vh-text-md);
+    border-radius: 10px;
+    border: 1px solid var(--menu-border);
+    background-color: var(--menu-bg);
+    color: var(--field-text);
+    padding: 0.65rem 0.85rem;
+    transition: border-color 140ms ease, box-shadow 140ms ease,
+        background-color 140ms ease;
+    width: 100%;
+}
+
+.vh-input::placeholder,
+.vh-textarea::placeholder {
+    color: var(--field-placeholder);
+}
+
+.vh-input:hover,
+.vh-textarea:hover {
+    border-color: var(--field-border);
+}
+
+.vh-input:focus,
+.vh-textarea:focus {
+    outline: none;
+    border-color: var(--field-focus);
+    background-color: var(--bg-elevated);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-focus) 20%, transparent);
+}
+
+.vh-textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: var(--vh-leading-relaxed);
+}
+
+.vh-input:disabled,
+.vh-textarea:disabled {
+    cursor: not-allowed;
+    background-color: var(--disabled-bg);
+    color: var(--disabled-text);
+    border-color: var(--disabled-border);
+}
+
+select.vh-input {
+    padding-right: 2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='https://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%234a4a4a' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.65rem center;
+    background-size: 16px;
+}
+
+/* Search Bar */
+.vh-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.vh-search__input {
+    appearance: none;
+    font-family: inherit;
+    font-size: var(--vh-text-md);
+    border-radius: 10px;
+    border: 1px solid var(--menu-border);
+    background-color: var(--menu-bg);
+    color: var(--field-text);
+    padding: 0.65rem 0.85rem 0.65rem 2.5rem;
+    width: 100%;
+    transition: border-color 140ms ease, box-shadow 140ms ease,
+        background-color 140ms ease;
+}
+
+.vh-search__input::placeholder {
+    color: var(--field-placeholder);
+}
+
+.vh-search__input:hover {
+    border-color: var(--field-border);
+}
+
+.vh-search__input:focus {
+    outline: none;
+    border-color: var(--field-focus);
+    background-color: var(--bg-elevated);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--field-focus) 20%, transparent);
+}
+
+.vh-search__icon {
+    position: absolute;
+    left: 0.75rem;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Dropdown / Menu System
+   ========================================================================== */
+
+details.vh-dropdown {
+    position: relative;
+    display: inline-block;
+    min-width: 220px;
+}
+
+summary.vh-dropdown__trigger {
+    list-style: none;
+    cursor: pointer;
+}
+
+summary.vh-dropdown__trigger::-webkit-details-marker {
+    display: none;
+}
+
+.vh-dropdown__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    width: 100%;
+    padding: var(--vh-button-padding-sm);
+    min-height: var(--vh-button-height-sm);
+    border-radius: var(--vh-button-radius-sm);
+    background-color: var(--menu-bg);
+    color: var(--secondary-text);
+    border: 1px solid var(--secondary-border);
+    transition: background-color 160ms ease, border-color 160ms ease,
+        color 160ms ease;
+}
+
+.vh-dropdown__trigger:hover {
+    background-color: var(--secondary-hover);
+}
+
+details.vh-dropdown[open]>summary.vh-dropdown__trigger {
+    background-color: var(--secondary-hover);
+}
+
+.vh-dropdown__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background-color: var(--menu-bg);
+    border: 1px solid var(--menu-border);
+    border-radius: 12px;
+    box-shadow: var(--menu-shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 160ms ease;
+    z-index: 20;
+}
+
+details.vh-dropdown[open] .vh-dropdown__menu {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.vh-dropdown__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 10px;
+    font-size: var(--vh-text-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.vh-dropdown__item:hover {
+    background-color: var(--menu-item-hover);
+    color: var(--accent-text-secondary);
+}
+
+.vh-dropdown__item:active {
+    background-color: var(--menu-item-active);
+}
+
+.vh-dropdown__item.is-destructive {
+    color: var(--destructive-bg);
+}
+
+.vh-dropdown__item+.vh-dropdown__item-divider {
+    margin: 0.25rem 0;
+}
+
+.vh-dropdown__item-divider {
+    height: 1px;
+    background: var(--menu-divider);
+}
+
+.vh-dropdown__meta {
+    font-size: var(--vh-text-xs);
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   Utility Helpers
+   ========================================================================== */
+
+.vh-surface {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--stroke-soft);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.vh-elevated {
+    background-color: var(--bg-elevated);
+    box-shadow: 0 18px 44px rgba(23, 25, 38, 0.08);
+}
+
+.vh-stack-sm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.vh-stack-md {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.vh-inline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vh-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--vh-text-xs);
+    font-weight: 600;
+    color: var(--secondary-text);
+    background-color: var(--secondary-hover);
+    border-radius: 999px;
+    padding: 0.35rem 0.75rem;
+}
+
+.vh-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding: 0 0.45rem;
+    border-radius: 999px;
+    background-color: var(--destructive-bg);
+    color: var(--destructive-text);
+    font-size: var(--vh-text-xs);
+    font-weight: 600;
+}
+/* ==========================================================================
+   VoteHub Console — app shell & screens
+   (everything below is built on the tokens defined above)
+   ========================================================================== */
+
+body {
+    margin: 0;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: "Avenir Next", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: var(--vh-text-md);
+    line-height: var(--vh-leading-standard);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.app { display: flex; min-height: 100vh; }
+
+/* ----- Sidebar ----- */
+.sidebar {
+    flex: 0 0 232px;
+    width: 232px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--stroke-soft);
+    padding: 1.1rem 0.85rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.brand { display: flex; align-items: center; gap: 0.6rem; padding: 0.25rem 0.5rem; }
+.brand__mark { width: 30px; height: 30px; flex: 0 0 30px; }
+.brand__name {
+    font-family: "TT Norms Pro", "Avenir Next", -apple-system, sans-serif;
+    font-weight: 600; font-size: var(--vh-text-md); letter-spacing: -0.01em;
+    color: var(--accent-text-primary); line-height: 1.15;
+}
+.brand__sub {
+    display: block; font-size: var(--vh-text-xs); font-weight: 400;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+}
+
+.nav { display: flex; flex-direction: column; gap: 0.15rem; }
+.nav__link {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.55rem 0.7rem; border-radius: 10px;
+    color: var(--text-secondary); font-size: var(--vh-text-sm); font-weight: 500;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+.nav__link:hover { background: var(--menu-item-hover); color: var(--accent-text-secondary); }
+.nav__link.is-active { background: var(--menu-item-active); color: var(--accent-text-primary); font-weight: 600; }
+.nav__link svg { width: 18px; height: 18px; flex: 0 0 18px; }
+
+/* ----- Main column ----- */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.6rem; border-bottom: 1px solid var(--stroke-soft);
+    background: var(--bg-base); position: sticky; top: 0; z-index: 10;
+}
+.topbar__title { display: flex; align-items: center; gap: 0.75rem; min-width: 0; }
+.topbar__title h1 { margin: 0; font-size: var(--vh-text-xl); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar__actions { display: flex; align-items: center; gap: 0.6rem; flex: 0 0 auto; }
+
+.live { display: inline-flex; align-items: center; gap: 0.45rem; font-size: var(--vh-text-xs); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.live__dot { width: 8px; height: 8px; border-radius: 999px; background: var(--constructive-bg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--constructive-focus) 60%, transparent); }
+
+.content { padding: 1.6rem; width: 100%; max-width: 1280px; }
+.stack { display: flex; flex-direction: column; gap: 1.25rem; }
+.eyebrow { font-size: var(--vh-text-xs); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--text-muted); margin: 0 0 0.55rem; }
+.note { font-size: var(--vh-text-sm); color: var(--text-muted); margin: 0; }
+
+/* ----- Toolbar ----- */
+.toolbar { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.toolbar .vh-search { flex: 1 1 260px; max-width: 360px; }
+.toolbar__spacer { flex: 1 1 auto; }
+
+/* ----- Tables ----- */
+.table-card { background: var(--bg-elevated); border: 1px solid var(--stroke-soft); border-radius: 16px; overflow: hidden; }
+.table-scroll { overflow-x: auto; }
+table.tbl { width: 100%; border-collapse: collapse; font-size: var(--vh-text-sm); }
+.tbl thead th {
+    position: sticky; top: 0; background: var(--bg-elevated); text-align: left;
+    font-size: var(--vh-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--stroke-soft); white-space: nowrap;
+}
+.tbl tbody td { padding: 0.7rem 0.85rem; border-bottom: 1px solid var(--stroke-soft); white-space: nowrap; color: var(--text-primary); }
+.tbl tbody tr:last-child td { border-bottom: none; }
+.tbl tbody tr:hover { background: var(--bg-surface); }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl .group-head th { text-transform: uppercase; letter-spacing: 0.06em; font-size: var(--vh-text-xxs); color: var(--text-muted); text-align: center; padding: 0.5rem 0.85rem 0.25rem; }
+.col-sep { border-left: 1px solid var(--stroke-soft); }
+.muted { color: var(--text-muted); }
+.race-link { font-weight: 600; }
+.incumbent { color: var(--text-muted); font-weight: 600; margin-left: 0.1rem; }
+.leader { font-weight: 600; color: var(--accent-text-primary); }
+
+/* ----- Stat strip (race header) ----- */
+.stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; }
+.stat { background: var(--bg-elevated); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 1.1rem 1.25rem; }
+.stat__label { font-size: var(--vh-text-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+.stat__value { font-size: var(--vh-text-2xl); font-weight: 500; letter-spacing: -0.01em; color: var(--accent-text-primary); font-variant-numeric: tabular-nums; margin-top: 0.35rem; line-height: 1.1; }
+.stat__value small { font-size: var(--vh-text-sm); color: var(--text-muted); font-weight: 400; }
+.progress { height: 8px; border-radius: 999px; background: var(--bg-surface); overflow: hidden; margin-top: 0.7rem; }
+.progress__bar { height: 100%; border-radius: 999px; background: var(--primary-bg); }
+
+/* ----- Panel ----- */
+.panel { background: var(--bg-elevated); border: 1px solid var(--stroke-soft); border-radius: 16px; padding: 1.25rem 1.4rem; }
+.panel__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.panel__title { font-size: var(--vh-text-lg); margin: 0; }
+.panel__row { display: flex; align-items: flex-end; gap: 0.75rem; flex-wrap: wrap; }
+
+/* ----- Status pills ----- */
+.pill { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--vh-text-xs); font-weight: 600; padding: 0.3rem 0.65rem; border-radius: 999px; }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 999px; background: currentColor; opacity: 0.85; }
+.pill--neutral { background: var(--bg-surface); color: var(--text-muted); }
+.pill--active { background: color-mix(in srgb, var(--primary-bg) 12%, white); color: var(--accent-text-primary); }
+.pill--done { background: color-mix(in srgb, var(--constructive-bg) 16%, white); color: var(--constructive-active); }
+
+/* ----- Map placeholder ----- */
+.map { background: var(--bg-surface); border: 1px solid var(--stroke-soft); border-radius: 16px; min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--text-muted); text-align: center; padding: 1.5rem; }
+.map svg { width: 40px; height: 40px; opacity: 0.55; }
+.map__label { font-size: var(--vh-text-sm); }
+
+/* ----- Modal ----- */
+.modal-overlay { position: fixed; inset: 0; background: var(--overlay-scrim); display: none; align-items: center; justify-content: center; padding: 1.5rem; z-index: 50; }
+.modal-overlay.is-open { display: flex; }
+.modal { background: var(--bg-elevated); border-radius: 16px; box-shadow: var(--menu-shadow); width: min(480px, 100%); padding: 1.5rem; }
+.modal__title { font-size: var(--vh-text-lg); margin: 0 0 0.25rem; }
+.modal__sub { font-size: var(--vh-text-sm); color: var(--text-muted); margin: 0 0 1.25rem; }
+.modal__grid { display: grid; gap: 1rem; }
+.modal__actions { display: flex; justify-content: flex-end; align-items: center; gap: 0.6rem; margin-top: 1.4rem; }
+
+/* ----- Forms / misc ----- */
+.form-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.readonly-value { padding: 0.65rem 0.85rem; border-radius: 10px; border: 1px solid var(--stroke-soft); background: var(--bg-surface); color: var(--text-secondary); font-size: var(--vh-text-md); }
+.inline-confirm { font-size: var(--vh-text-sm); color: var(--constructive-active); display: none; align-items: center; gap: 0.4rem; margin-right: auto; }
+.inline-confirm.is-show { display: inline-flex; }
+.table-select { font-size: var(--vh-text-sm); padding: 0.4rem 1.8rem 0.4rem 0.6rem; min-height: 0; }
+
+/* ----- Responsive + motion ----- */
+@media (max-width: 860px) {
+    .app { flex-direction: column; }
+    .sidebar { position: static; height: auto; width: 100%; flex: none; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .nav { flex-direction: row; flex-wrap: wrap; }
+    .content { padding: 1.1rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ----- Results map (schematic VCU regions) ----- */
+.map { background: var(--bg-elevated); border: 1px solid var(--stroke-soft); border-radius: 16px; min-height: 0; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; align-items: stretch; justify-content: flex-start; color: var(--text-primary); text-align: left; }
+.map__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; }
+.map-region { border: 1px solid var(--stroke-soft); border-radius: 12px; padding: 0.8rem 0.85rem; min-height: 92px; display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem; }
+.map-region__name { font-size: var(--vh-text-sm); font-weight: 600; }
+.map-region__leader { font-size: var(--vh-text-xs); }
+.map-region__meta { font-size: var(--vh-text-xxs); font-variant-numeric: tabular-nums; opacity: 0.85; }
+.map-region.is-led { color: #fff; border-color: transparent; }
+.map-region.is-empty { background: var(--bg-surface); color: var(--text-muted); }
+.map__legend { display: flex; flex-wrap: wrap; gap: 0.75rem 1rem; }
+.legend-item { display: inline-flex; align-items: center; gap: 0.4rem; font-size: var(--vh-text-xs); color: var(--text-secondary); }
+.legend-swatch { width: 12px; height: 12px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.08); flex: 0 0 12px; }
+.map__note { font-size: var(--vh-text-xs); color: var(--text-muted); margin: 0; }
+
+/* ----- Race-call graphic preview ----- */
+.modal--graphic .modal { width: min(560px, 100%); }
+.graphic-card { border: 1px solid var(--stroke-soft); border-radius: 16px; overflow: hidden; background: var(--bg-elevated); }
+.graphic-card__head { display: flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--stroke-soft); }
+.graphic-card__head svg { width: 22px; height: 22px; }
+.graphic-card__brand { font-weight: 600; font-size: var(--vh-text-sm); color: var(--accent-text-primary); }
+.graphic-card__body { padding: 1.6rem 1.25rem; text-align: center; }
+.graphic-card__eyebrow { font-size: var(--vh-text-xs); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--text-muted); }
+.graphic-card__race { font-size: var(--vh-text-lg); margin: 0.35rem 0 1.1rem; }
+.graphic-card__winner { display: inline-flex; align-items: center; gap: 0.55rem; font-family: "TT Norms Pro", "Avenir Next", sans-serif; font-size: var(--vh-text-2xl); font-weight: 600; letter-spacing: -0.01em; color: var(--accent-text-primary); }
+.graphic-card__check { width: 26px; height: 26px; border-radius: 999px; background: var(--constructive-bg); color: #fff; display: inline-flex; align-items: center; justify-content: center; }
+.graphic-card__check svg { width: 15px; height: 15px; }
+.graphic-card__party { font-size: var(--vh-text-sm); color: var(--text-muted); margin-top: 0.4rem; }
+.graphic-card__bar { height: 8px; border-radius: 999px; background: var(--bg-surface); overflow: hidden; margin: 1.1rem auto 0; max-width: 280px; }
+.graphic-card__bar > span { display: block; height: 100%; background: var(--primary-bg); border-radius: 999px; }
+.graphic-card__foot { display: flex; justify-content: space-between; padding: 0.8rem 1.1rem; border-top: 1px solid var(--stroke-soft); font-size: var(--vh-text-xs); color: var(--text-muted); }
+.graphic-note { font-size: var(--vh-text-sm); color: var(--text-muted); margin: 1rem 0 0; }
+
+.map--empty { min-height: 240px; align-items: center; justify-content: center; }
+.map--empty svg { width: 46px; height: 46px; color: var(--text-muted); opacity: 0.45; }
+.view { display: none; }
+.view.is-active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 160.02 160.06" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#351c71" d="M159.96,80c0,44.18-35.79,80-79.94,80S.07,124.18.07,80,35.87,0,80.02,0s79.94,35.82,79.94,80ZM140.09,80c0-33.3-26.98-60.3-60.26-60.3s-60.26,27-60.26,60.3,26.98,60.3,60.26,60.3,60.26-27,60.26-60.3Z"/><polygon fill="#351c71" points="107.45 45.89 121.58 59.99 66.05 115.35 37.39 87.06 51.4 72.94 66.05 87.13 107.45 45.89"/></svg>
+        <span><span class="brand__name">VoteHub</span><span class="brand__sub">Console</span></span>
+      </div>
+      <nav class="nav">
+        <a class="nav__link" href="#" data-nav="depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="8" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>Depot</a>
+        <a class="nav__link" href="#" data-nav="reporting"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="4" width="8" height="3" rx="1"/><path d="M8 5.5H6a2 2 0 0 0-2 2V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5a2 2 0 0 0-2-2h-2"/><path d="m9 14 2 2 4-4"/></svg>Reporting status</a>
+        <a class="nav__link" href="#" data-nav="export"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v10"/><path d="m8 11 4 4 4-4"/><path d="M5 19h14"/></svg>Export</a>
+      </nav>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar__title">
+          <button class="vh-button vh-button--ghost vh-button-sm" data-race-only data-goto="depot" aria-label="Back to Depot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:16px;height:16px"><path d="m15 18-6-6 6-6"/></svg>Depot</button>
+          <h1 id="pageTitle">Depot</h1>
+          <span class="vh-tag" id="raceId" data-race-only>ID 101</span>
+        </div>
+        <div class="topbar__actions">
+          <button class="vh-button vh-button--secondary vh-button-sm" data-race-only data-open-modal="#voteModal">Enter votes</button>
+          <span class="live"><span class="live__dot"></span>Live · <span data-clock>--:--:--</span></span>
+        </div>
+      </header>
+      <div class="content">
+
+        <section class="view" id="view-depot"><div class="stack">
+          <div class="toolbar">
+            <div class="vh-search">
+              <svg class="vh-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <input id="depotSearch" class="vh-search__input" type="text" placeholder="Filter races" aria-label="Filter races">
+            </div>
+            <div class="toolbar__spacer"></div>
+            <span class="note" id="depotCount"></span>
+          </div>
+          <div class="table-card"><div class="table-scroll">
+            <table class="tbl">
+              <thead><tr><th>ID</th><th>Race</th><th>Poll close</th><th>Call</th><th>Leader</th><th>Incumbent</th><th class="num">Margin</th><th class="num">Votes reported</th><th class="num">Est. % in</th></tr></thead>
+              <tbody id="depotBody">
+                <tr><td class="muted">101</td><td><a class="race-link" href="#" data-goto="race">Governor</a></td><td>7:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate A</td><td>Candidate A</td><td class="num">+6.8%</td><td class="num">614,500</td><td class="num">42%</td></tr>
+                <tr><td class="muted">102</td><td><a class="race-link" href="#" data-goto="race">U.S. Senate</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="leader">Candidate D</td><td>Candidate E</td><td class="num">+2.0%</td><td class="num">345,700</td><td class="num">29%</td></tr>
+                <tr><td class="muted">103</td><td><a class="race-link" href="#" data-goto="race">Attorney General</a></td><td>8:00 PM ET</td><td><span class="pill pill--neutral">Uncalled</span></td><td class="muted">&mdash;</td><td>Candidate G</td><td class="num muted">&mdash;</td><td class="num">0</td><td class="num">0%</td></tr>
+                <tr><td class="muted">104</td><td><a class="race-link" href="#" data-goto="race">U.S. House &middot; District 3</a></td><td>7:30 PM ET</td><td><span class="pill pill--done">Called</span></td><td class="leader">Candidate J</td><td>&mdash;</td><td class="num">+17.0%</td><td class="num">135,000</td><td class="num">90%</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        </div></section>
+
+        <section class="view" id="view-race"><div class="stack">
+        <section>
+          <p class="eyebrow">Header</p>
+          <div class="stat-strip">
+            <div class="stat"><div class="stat__label">Votes reported</div><div class="stat__value">614,500</div></div>
+            <div class="stat"><div class="stat__label">Total votes expected</div><div class="stat__value">1,450,000</div></div>
+            <div class="stat">
+              <div class="stat__label">Reported</div>
+              <div class="stat__value"><span id="hdrPct">42</span><small>%</small></div>
+              <div class="progress"><div class="progress__bar" style="width:42%"></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title">Race call</h2>
+            <span class="pill pill--neutral" id="callState">Uncalled</span>
+          </div>
+          <div class="panel__row">
+            <div class="vh-field" style="min-width:220px">
+              <label class="vh-field__label" for="callCandidate">Winner</label>
+              <select id="callCandidate" class="vh-input">
+                <option value="A" data-party="D">Candidate A</option>
+                <option value="B" data-party="R">Candidate B</option>
+                <option value="C" data-party="I">Candidate C</option>
+              </select>
+            </div>
+            <button class="vh-button vh-button--secondary" id="advanceBtn">Advance</button>
+            <button class="vh-button vh-button--constructive" id="callBtn">Call winner</button>
+            <button class="vh-button vh-button--secondary" id="graphicBtn">Create graphic</button>
+            <button class="vh-button vh-button--ghost vh-button-sm" id="resetBtn">Reset</button>
+          </div>
+        </section>
+
+        <section>
+          <p class="eyebrow">Topline</p>
+          <div class="table-card"><div class="table-scroll">
+            <table class="tbl">
+              <thead><tr><th>Candidate</th><th>Party</th><th class="num">Votes</th><th class="num">%</th></tr></thead>
+              <tbody>
+                <tr><td class="leader">Candidate A<span class="incumbent" title="Incumbent">*</span></td><td>D</td><td class="num">325,000</td><td class="num">52.9%</td></tr>
+                <tr><td>Candidate B</td><td>R</td><td class="num">283,000</td><td class="num">46.1%</td></tr>
+                <tr><td>Candidate C</td><td>I</td><td class="num">6,500</td><td class="num">1.1%</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        </section>
+
+        <section>
+          <p class="eyebrow">By VCU</p>
+          <div class="table-card"><div class="table-scroll">
+            <table class="tbl">
+              <thead>
+                <tr class="group-head"><th colspan="6"></th><th colspan="3" class="col-sep">Raw votes</th><th colspan="3" class="col-sep">Percent</th></tr>
+                <tr><th>VCU</th><th>Leader</th><th class="num">Reported</th><th class="num">Remaining</th><th class="num">Expected</th><th class="num">Margin</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th><th class="num col-sep">A</th><th class="num">B</th><th class="num">C</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ash County</td><td class="leader">Candidate A</td><td class="num">172,000</td><td class="num">188,000</td><td class="num">360,000</td><td class="num">+5.8%</td><td class="num col-sep">90,000</td><td class="num">80,000</td><td class="num">2,000</td><td class="num col-sep">52.3%</td><td class="num">46.5%</td><td class="num">1.2%</td></tr>
+                <tr><td>Birch County</td><td class="leader">Candidate B</td><td class="num">124,500</td><td class="num">175,500</td><td class="num">300,000</td><td class="num">+2.4%</td><td class="num col-sep">60,000</td><td class="num">63,000</td><td class="num">1,500</td><td class="num col-sep">48.2%</td><td class="num">50.6%</td><td class="num">1.2%</td></tr>
+                <tr><td>Dale County</td><td class="leader">Candidate A</td><td class="num">318,000</td><td class="num">222,000</td><td class="num">540,000</td><td class="num">+11.0%</td><td class="num col-sep">175,000</td><td class="num">140,000</td><td class="num">3,000</td><td class="num col-sep">55.0%</td><td class="num">44.0%</td><td class="num">0.9%</td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        </section>
+
+        <section>
+          <p class="eyebrow">Map</p>
+          <div class="map map--empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 4 6 2 5-2v14l-5 2-6-2-5 2V6z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg>
+          </div>
+        </section>
+        </div></section>
+
+        <section class="view" id="view-reporting"><div class="stack">
+          <div class="toolbar">
+            <button class="vh-button vh-button--secondary vh-button-sm" id="shiftToggle" aria-pressed="false">Shift view · <span data-shift-count>off</span></button>
+          </div>
+          <div class="table-card"><div class="table-scroll">
+            <table class="tbl">
+              <thead><tr><th>County</th><th class="num">Votes reported</th><th class="num">Total expected</th><th class="num">% reported</th><th>State</th><th>Update</th></tr></thead>
+              <tbody id="reportBody">
+                <tr><td>Ash County</td><td class="num">172,000</td><td class="num">360,000</td><td class="num">48%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
+                <tr><td>Birch County</td><td class="num">124,500</td><td class="num">300,000</td><td class="num">42%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
+                <tr><td>Cedar County</td><td class="num">0</td><td class="num">250,000</td><td class="num">0%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete">Complete</option></select></td></tr>
+                <tr><td>Dale County</td><td class="num">318,000</td><td class="num">540,000</td><td class="num">59%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly" selected>Nearly complete</option><option value="complete">Complete</option></select></td></tr>
+                <tr><td>Elm County</td><td class="num">51,200</td><td class="num">52,000</td><td class="num">98%</td><td><span class="pill" data-pill></span></td><td><select class="vh-input table-select" data-status><option value="reporting">Reporting</option><option value="nearly">Nearly complete</option><option value="complete" selected>Complete</option></select></td></tr>
+              </tbody>
+            </table>
+          </div></div>
+        </div></section>
+
+        <section class="view" id="view-export"><div class="stack" style="max-width:640px">
+          <section class="panel">
+            <div class="panel__head"><h2 class="panel__title">Export postGIS data</h2></div>
+            <div class="form-grid">
+              <div class="vh-field"><label class="vh-field__label" for="exScope">Scope</label><select id="exScope" class="vh-input"><option>This race</option><option>All races</option></select></div>
+              <div class="vh-field"><label class="vh-field__label" for="exLayer">Layer</label><select id="exLayer" class="vh-input"><option>VCU results</option><option>VCU boundaries</option><option>Results + boundaries</option></select></div>
+              <div class="vh-field"><label class="vh-field__label" for="exFormat">Format</label><select id="exFormat" class="vh-input"><option>GeoJSON</option><option>Shapefile (.zip)</option><option>CSV</option></select></div>
+              <div class="vh-field"><label class="vh-field__label" for="exCrs">Coordinate system</label><select id="exCrs" class="vh-input"><option>WGS 84 (EPSG:4326)</option><option>Web Mercator (EPSG:3857)</option></select></div>
+            </div>
+            <div class="panel__row" style="margin-top:1.4rem; align-items:center">
+              <button class="vh-button vh-button--primary" id="exportBtn">Prepare export</button>
+              <span class="note" id="exportStatus" style="display:none"></span>
+              <button class="vh-button vh-button--secondary" id="downloadBtn" style="display:none">Download</button>
+            </div>
+          </section>
+        </div></section>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="voteModal" role="dialog" aria-modal="true" aria-labelledby="voteModalTitle">
+    <div class="modal">
+      <h2 class="modal__title" id="voteModalTitle">Enter votes</h2>
+      <div class="modal__grid">
+        <div class="vh-field"><label class="vh-field__label" for="voteRace">Race</label><select id="voteRace" class="vh-input"><option>Governor</option><option>U.S. Senate</option><option>Attorney General</option><option>U.S. House &middot; District 3</option></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteVcu">VCU</label><select id="voteVcu" class="vh-input"><option>Ash County</option><option>Birch County</option><option>Dale County</option></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteCandidate">Candidate</label><select id="voteCandidate" class="vh-input"><option>Candidate A</option><option>Candidate B</option><option>Candidate C</option></select></div>
+        <div class="vh-field"><label class="vh-field__label" for="voteCount">Votes</label><input id="voteCount" class="vh-input" type="number" inputmode="numeric" min="0" placeholder="0"></div>
+      </div>
+      <div class="modal__actions">
+        <button class="vh-button vh-button--secondary vh-button-sm" data-close-modal>Cancel</button>
+        <button class="vh-button vh-button--primary vh-button-sm" id="voteSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay modal--graphic" id="graphicModal" role="dialog" aria-modal="true" aria-labelledby="graphicModalTitle">
+    <div class="modal">
+      <h2 class="modal__title" id="graphicModalTitle">Race-call graphic</h2>
+      <div class="graphic-card">
+        <div class="graphic-card__head">
+          <svg viewBox="0 0 160.02 160.06" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#351c71" d="M159.96,80c0,44.18-35.79,80-79.94,80S.07,124.18.07,80,35.87,0,80.02,0s79.94,35.82,79.94,80ZM140.09,80c0-33.3-26.98-60.3-60.26-60.3s-60.26,27-60.26,60.3,26.98,60.3,60.26,60.3,60.26-27,60.26-60.3Z"/><polygon fill="#351c71" points="107.45 45.89 121.58 59.99 66.05 115.35 37.39 87.06 51.4 72.94 66.05 87.13 107.45 45.89"/></svg>
+          <span class="graphic-card__brand">VoteHub Console</span>
+        </div>
+        <div class="graphic-card__body">
+          <div class="graphic-card__eyebrow" id="gEyebrow">Race call</div>
+          <h3 class="graphic-card__race" id="gRace">Governor</h3>
+          <div class="graphic-card__winner">
+            <span class="graphic-card__check" id="gCheck" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg></span>
+            <span id="gWinner">Candidate A</span>
+          </div>
+          <div class="graphic-card__party" id="gParty">Party D</div>
+        </div>
+        <div class="graphic-card__foot"><span>VoteHub</span><span id="gReported">42% reported</span></div>
+      </div>
+      <div class="modal__actions">
+        <button class="vh-button vh-button--secondary vh-button-sm" data-close-modal>Close</button>
+        <button class="vh-button vh-button--primary vh-button-sm">Download PNG</button>
+      </div>
+    </div>
+  </div>
+  <script>
+/* VoteHub Console — UI mock. Static pages with light interactivity only. */
+(function () {
+  if (typeof document === 'undefined') return;
+  function el(id) { return document.getElementById(id); }
+
+  /* Modals: open / close / overlay / Esc */
+  document.addEventListener('click', function (e) {
+    var o = e.target.closest('[data-open-modal]');
+    if (o) { var m = document.querySelector(o.getAttribute('data-open-modal')); if (m) m.classList.add('is-open'); return; }
+    if (e.target.closest('[data-close-modal]') || e.target.classList.contains('modal-overlay')) {
+      var ov = e.target.closest('.modal-overlay'); if (ov) ov.classList.remove('is-open');
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.is-open').forEach(function (m) { m.classList.remove('is-open'); });
+  });
+
+  /* Live clock */
+  (function () {
+    var c = document.querySelector('[data-clock]'); if (!c) return;
+    function t() { c.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
+    t(); setInterval(t, 1000);
+  })();
+
+  /* Depot filter */
+  (function () {
+    var input = el('depotSearch'), body = el('depotBody'); if (!input || !body) return;
+    function run() {
+      var q = input.value.toLowerCase(), n = 0;
+      body.querySelectorAll('tr').forEach(function (tr) {
+        var hit = tr.textContent.toLowerCase().indexOf(q) !== -1;
+        tr.style.display = hit ? '' : 'none'; if (hit) n++;
+      });
+      var c = el('depotCount'); if (c) c.textContent = n + (n === 1 ? ' race' : ' races');
+    }
+    input.addEventListener('input', run); run();
+  })();
+
+  /* Race call + create-graphic */
+  (function () {
+    var sel = el('callCandidate'), pill = el('callState'); if (!pill) return;
+    function who() { return sel ? sel.options[sel.selectedIndex].text : ''; }
+    function set(status) {
+      if (status === 'called') { pill.className = 'pill pill--done'; pill.textContent = 'Called \u00b7 ' + who(); }
+      else if (status === 'advanced') { pill.className = 'pill pill--active'; pill.textContent = 'Advanced \u00b7 ' + who(); }
+      else { pill.className = 'pill pill--neutral'; pill.textContent = 'Uncalled'; }
+    }
+    if (el('advanceBtn')) el('advanceBtn').addEventListener('click', function () { set('advanced'); });
+    if (el('callBtn')) el('callBtn').addEventListener('click', function () { set('called'); });
+    if (el('resetBtn')) el('resetBtn').addEventListener('click', function () { set('uncalled'); });
+    if (sel) sel.addEventListener('change', function () {
+      if (pill.classList.contains('pill--done')) set('called');
+      else if (pill.classList.contains('pill--active')) set('advanced');
+    });
+
+    var gb = el('graphicBtn');
+    if (gb) gb.addEventListener('click', function () {
+      // Builds the published race-call graphic. Render/export pipeline plugs in here.
+      var rt = el('raceTitle') || el('pageTitle');
+      if (el('gRace') && rt) el('gRace').textContent = rt.textContent;
+      if (el('gWinner')) el('gWinner').textContent = who();
+      var party = sel ? sel.options[sel.selectedIndex].getAttribute('data-party') : '';
+      if (el('gParty')) el('gParty').textContent = party ? ('Party ' + party) : '';
+      var called = pill.classList.contains('pill--done');
+      if (el('gEyebrow')) el('gEyebrow').textContent = called ? 'Projected winner' : (pill.classList.contains('pill--active') ? 'Advancing' : 'Race call');
+      if (el('gCheck')) el('gCheck').style.display = called ? 'inline-flex' : 'none';
+      var hp = el('hdrPct'); if (el('gReported') && hp) el('gReported').textContent = hp.textContent.replace('%', '') + '% reported';
+      var m = el('graphicModal'); if (m) m.classList.add('is-open');
+    });
+  })();
+
+  /* Vote entry form */
+  (function () {
+    var save = el('voteSave'); if (!save) return;
+    save.addEventListener('click', function () { var m = el('voteModal'); if (m) m.classList.remove('is-open'); });
+  })();
+
+  /* Reporting status + shift view */
+  (function () {
+    var body = el('reportBody'); if (!body) return;
+    var labels = { reporting: 'Reporting', nearly: 'Nearly complete', complete: 'Complete' };
+    var classes = { reporting: 'pill--neutral', nearly: 'pill--active', complete: 'pill--done' };
+    function sync(tr) { var s = tr.querySelector('[data-status]'), p = tr.querySelector('[data-pill]'); p.className = 'pill ' + classes[s.value]; p.textContent = labels[s.value]; }
+    function shift() {
+      var t = el('shiftToggle'), on = t && t.getAttribute('aria-pressed') === 'true', n = 0;
+      body.querySelectorAll('tr').forEach(function (tr) {
+        var s = tr.querySelector('[data-status]').value, vis = !on || s === 'nearly' || s === 'complete';
+        tr.style.display = vis ? '' : 'none'; if (vis) n++;
+      });
+      if (t) t.querySelector('[data-shift-count]').textContent = on ? (n + (n === 1 ? ' county' : ' counties')) : 'off';
+    }
+    body.querySelectorAll('tr').forEach(function (tr) { var s = tr.querySelector('[data-status]'); s.addEventListener('change', function () { sync(tr); shift(); }); sync(tr); });
+    var t = el('shiftToggle');
+    if (t) t.addEventListener('click', function () {
+      var on = t.getAttribute('aria-pressed') === 'true';
+      t.setAttribute('aria-pressed', String(!on));
+      t.classList.toggle('vh-button--primary', !on); t.classList.toggle('vh-button--secondary', on);
+      shift();
+    });
+    shift();
+  })();
+
+  /* Export */
+  (function () {
+    var btn = el('exportBtn'); if (!btn) return;
+    var status = el('exportStatus'), dl = el('downloadBtn');
+    btn.addEventListener('click', function () {
+      if (dl) dl.style.display = 'none'; btn.disabled = true; btn.textContent = 'Preparing\u2026';
+      if (status) { status.style.display = 'inline'; status.textContent = 'Building snapshot'; }
+      setTimeout(function () { btn.disabled = false; btn.textContent = 'Prepare export'; if (status) status.textContent = 'Export ready'; if (dl) dl.style.display = 'inline-flex'; }, 900);
+    });
+  })();
+})();
+
+  /* Single-file preview: view switching */
+  (function () {
+    var titles = { depot: 'Depot', race: 'Governor', reporting: 'Reporting status', "export": 'Export' };
+    var raceOnly = [].slice.call(document.querySelectorAll('[data-race-only]'));
+    function show(name) {
+      document.querySelectorAll('.view').forEach(function (v) { v.classList.toggle('is-active', v.id === 'view-' + name); });
+      document.querySelectorAll('[data-nav]').forEach(function (n) { n.classList.toggle('is-active', n.getAttribute('data-nav') === name); });
+      var t = document.getElementById('pageTitle'); if (t) t.textContent = titles[name] || '';
+      raceOnly.forEach(function (e) { e.style.display = (name === 'race') ? '' : 'none'; });
+      window.scrollTo(0, 0);
+    }
+    document.addEventListener('click', function (e) {
+      var go = e.target.closest('[data-goto]'); if (go) { e.preventDefault(); show(go.getAttribute('data-goto')); return; }
+      var nav = e.target.closest('[data-nav]'); if (nav) { e.preventDefault(); show(nav.getAttribute('data-nav')); return; }
+    });
+    show('depot');
+  })();
+  </script>
+</body>
+</html>
